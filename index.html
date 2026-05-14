@@ -506,13 +506,13 @@
         const p = JSON.parse(raw);
         if (p && p.profiles && Array.isArray(p.profiles)) return p;
         if (p && p.meals) {
-          const migrated = { activeProfile: 0, profiles: [{ name: 'Oğuzcan', data: { meals: p.meals, fridge: p.fridge || [], grocery: p.grocery || [], favorites: p.favorites || [] } }] };
+          const migrated = { activeProfile: 0, profiles: [{ name: 'ozimaus', data: { meals: p.meals, fridge: p.fridge || [], grocery: p.grocery || [], favorites: p.favorites || [] } }] };
           saveApp(migrated);
           return migrated;
         }
       }
     } catch (e) {}
-    return { activeProfile: 0, profiles: [{ name: 'Oğuzcan', data: { meals: {}, fridge: [], grocery: [], favorites: [] } }] };
+    return { activeProfile: 0, profiles: [{ name: 'ozimaus', data: { meals: {}, fridge: [], grocery: [], favorites: [] } }, { name: 'madsiebear', data: { meals: {}, fridge: [], grocery: [], favorites: [] } }] };
   }
 
   function saveApp(a) { localStorage.setItem(KEY, JSON.stringify(a)); }
