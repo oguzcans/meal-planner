@@ -23,6 +23,7 @@
     --shadow: 0 1px 4px rgba(0,0,0,0.06);
     --radius: 14px;
     --font: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --sticky-bg: var(--card);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
@@ -35,104 +36,45 @@
     min-height: 100vh;
   }
 
-  .header {
-    padding: 52px 0 8px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: var(--bg);
-  }
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .header h1 {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .header { padding: 52px 0 8px; position: sticky; top: 0; z-index: 10; background: var(--bg); }
+  .header-top { display: flex; align-items: center; justify-content: space-between; }
+  .header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; display: flex; align-items: center; gap: 6px; }
   .header h1 span { color: var(--primary); }
   .header .subtitle { font-size: 14px; color: var(--muted); margin-top: 2px; }
 
-  .profile-bar {
-    display: flex;
-    gap: 6px;
-    margin: 8px 0 4px;
-  }
+  .profile-bar { display: flex; gap: 6px; margin: 8px 0 4px; flex-wrap: wrap; }
   .profile-btn {
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 500;
-    border: 1.5px solid var(--border);
-    background: var(--card);
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
+    padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: 500;
+    border: 1.5px solid var(--border); background: var(--card); color: var(--muted); cursor: pointer; transition: all 0.15s;
   }
-  .profile-btn.active {
-    background: var(--primary);
-    color: #fff;
-    border-color: var(--primary);
-  }
+  .profile-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
   .profile-btn:active { opacity: 0.7; }
 
-  .section {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 18px;
-    margin-bottom: 14px;
-    box-shadow: var(--shadow);
-  }
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-  .section-title {
-    font-size: 17px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  .section { background: var(--card); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow); }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 8px; }
+  .section-title { font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
   .section-title .count { font-size: 13px; font-weight: 500; color: var(--muted); }
   .section-hint { font-size: 13px; color: var(--muted); margin-top: -8px; margin-bottom: 12px; }
 
-  .input-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
+  .layout-toggle { display: flex; gap: 4px; background: var(--bg); padding: 3px; border-radius: 10px; flex-shrink: 0; }
+  .layout-btn {
+    padding: 6px 12px; border: none; border-radius: 8px; font-size: 12px; font-weight: 600;
+    cursor: pointer; background: transparent; color: var(--muted); transition: all 0.15s; white-space: nowrap;
   }
+  .layout-btn.active { background: var(--card); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .layout-btn:active { opacity: 0.7; }
+
+  .input-row { display: flex; gap: 8px; margin-bottom: 12px; }
   .input-row input {
-    flex: 1;
-    padding: 11px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-size: 15px;
-    font-family: inherit;
-    background: var(--bg);
-    transition: border-color 0.2s;
+    flex: 1; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+    font-size: 15px; font-family: inherit; background: var(--bg); transition: border-color 0.2s;
   }
   .input-row input:focus { outline: none; border-color: var(--primary); background: var(--card); }
   .input-row input::placeholder { color: #c7c7cc; }
 
   .btn {
-    padding: 11px 18px;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    background: var(--primary);
-    color: #fff;
-    white-space: nowrap;
-    transition: opacity 0.15s;
+    padding: 11px 18px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600;
+    cursor: pointer; background: var(--primary); color: #fff; white-space: nowrap; transition: opacity 0.15s;
   }
   .btn:active { opacity: 0.7; }
   .btn-sm { padding: 8px 14px; font-size: 13px; border-radius: 8px; font-weight: 500; }
@@ -140,12 +82,8 @@
 
   .item-list { list-style: none; }
   .item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    animation: slideIn 0.2s ease;
+    display: flex; align-items: center; gap: 10px; padding: 10px 0;
+    border-bottom: 1px solid var(--border); animation: slideIn 0.2s ease;
   }
   .item:last-child { border-bottom: none; }
   @keyframes slideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
@@ -157,89 +95,76 @@
   .item .del:active { color: var(--red); }
 
   .check {
-    width: 22px; height: 22px;
-    border: 2px solid var(--border);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: all 0.2s;
+    width: 22px; height: 22px; border: 2px solid var(--border); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    flex-shrink: 0; transition: all 0.2s;
   }
   .check.checked { background: var(--green); border-color: var(--green); }
   .check.checked::after { content: '✓'; color: #fff; font-size: 13px; font-weight: 700; }
   .item.checked label { text-decoration: line-through; color: var(--muted); }
 
-  .empty {
-    text-align: center;
-    color: var(--muted);
-    font-size: 14px;
-    padding: 24px 0 8px;
-    line-height: 1.5;
-  }
+  .empty { text-align: center; color: var(--muted); font-size: 14px; padding: 24px 0 8px; line-height: 1.5; }
   .empty .hint { font-size: 28px; display: block; margin-bottom: 6px; }
 
-  .plan-wrap { overflow-x: auto; }
-  .plan-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 420px;
-  }
+  .plan-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .plan-table { width: 100%; border-collapse: collapse; }
   .plan-table th {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-    padding: 6px 4px 10px;
-    text-align: left;
-    white-space: nowrap;
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    padding: 6px 4px 10px; text-align: left; white-space: nowrap;
   }
-  .plan-table th:first-child { width: 72px; }
-  .plan-table td { padding: 4px 4px 8px; vertical-align: top; }
-  .plan-table td:first-child { font-size: 12px; font-weight: 600; padding-top: 8px; white-space: nowrap; color: var(--text); line-height: 1.3; }
-  .plan-table td:first-child .dow { font-size: 10px; font-weight: 400; color: var(--muted); display: block; }
-  .plan-table tr.today td:first-child { color: var(--primary); }
-  .plan-table tr.today td:first-child .dow { color: var(--primary); opacity: 0.6; }
-  .plan-table tr.past td:first-child { color: var(--muted); }
-  .plan-table tr.past .meal-input { opacity: 0.6; }
+
+  /* Mode A: days as rows */
+  .mode-a { min-width: 420px; }
+  .mode-a th:first-child { width: 72px; }
+  .mode-a td { padding: 4px 4px 8px; vertical-align: top; }
+  .mode-a td:first-child { font-size: 12px; font-weight: 600; padding-top: 8px; white-space: nowrap; color: var(--text); line-height: 1.3; }
+  .mode-a td:first-child .dow { font-size: 10px; font-weight: 400; color: var(--muted); display: block; }
+  .mode-a tr.today td:first-child { color: var(--primary); }
+  .mode-a tr.today td:first-child .dow { color: var(--primary); opacity: 0.6; }
+  .mode-a tr.past td:first-child { color: var(--muted); }
+  .mode-a tr.past .meal-input { opacity: 0.6; }
+
+  /* Mode B: meals as rows, days as columns, frozen first column */
+  .mode-b { min-width: 100%; }
+  .mode-b th, .mode-b td { padding: 5px 4px; vertical-align: top; white-space: nowrap; }
+  .mode-b th { font-size: 11px; padding: 6px 4px 8px; }
+  .mode-b th:first-child, .mode-b td:first-child {
+    position: sticky; left: 0; z-index: 3;
+    background: var(--sticky-bg);
+    min-width: 72px;
+    max-width: 72px;
+  }
+  .mode-b th:first-child { z-index: 5; }
+  .mode-b td:first-child { font-size: 12px; font-weight: 600; color: var(--text); }
+  .mode-b .meal-row-label { font-size: 12px; font-weight: 600; line-height: 1.2; }
+  .mode-b .meal-row-label .icon { font-size: 14px; }
+  .mode-b .today-highlight { color: var(--primary); }
+
+  .mode-b .day-col { text-align: left; }
+  .mode-b .day-col .dow { font-size: 10px; font-weight: 400; color: var(--muted); display: block; }
 
   .meal-cell { position: relative; }
   .meal-input-wrap { position: relative; display: flex; align-items: center; gap: 3px; }
   .meal-input {
-    flex: 1;
-    padding: 8px 10px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: inherit;
-    background: var(--bg);
-    transition: border-color 0.2s, background 0.2s;
-    min-width: 60px;
-    cursor: text;
+    flex: 1; padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 14px; font-family: inherit; background: var(--bg);
+    transition: border-color 0.2s, background 0.2s; min-width: 60px; cursor: text;
   }
   .meal-input:focus { outline: none; border-color: var(--primary); background: var(--card); }
   .meal-input::placeholder { color: #d1d1d6; font-size: 12px; }
 
+  .mode-b .meal-input { min-width: 72px; font-size: 13px; padding: 7px 8px; }
+
   .star-btn {
-    background: none;
-    border: none;
-    font-size: 17px;
-    cursor: pointer;
-    padding: 2px;
-    flex-shrink: 0;
-    opacity: 0.2;
-    transition: opacity 0.2s, transform 0.15s;
-    line-height: 1;
+    background: none; border: none; font-size: 16px; cursor: pointer; padding: 2px;
+    flex-shrink: 0; opacity: 0.2; transition: opacity 0.2s, transform 0.15s; line-height: 1;
   }
   .star-btn.show { opacity: 1; color: var(--yellow); }
   .star-btn.show:active { transform: scale(1.3); }
 
   .ing-panel {
-    background: var(--bg);
-    border-radius: 8px;
-    padding: 10px;
-    margin-top: 6px;
-    display: none;
+    background: var(--bg); border-radius: 8px; padding: 10px; margin-top: 6px; display: none;
+    min-width: 180px;
   }
   .ing-panel.open { display: block; }
   .ing-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
@@ -248,23 +173,15 @@
   .ing-row:last-of-type { border-bottom: none; }
   .ing-row .del-ing { background: none; border: none; color: #c7c7cc; font-size: 14px; cursor: pointer; padding: 2px; }
   .ing-row .del-ing:active { color: var(--red); }
-  .ing-add-row { display: flex; gap: 6px; margin-top: 6px; }
-  .ing-add-row input { flex: 1; padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; background: var(--card); }
+  .ing-add-row { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .ing-add-row input { flex: 1; min-width: 80px; padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; background: var(--card); }
   .ing-add-row input:focus { outline: none; border-color: var(--primary); }
 
   .fav-picker-row { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .fav-picker-row::-webkit-scrollbar { display: none; }
   .fav-pick {
-    flex-shrink: 0;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.15s;
+    flex-shrink: 0; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 500;
+    background: var(--card); border: 1.5px solid var(--border); cursor: pointer; white-space: nowrap; transition: all 0.15s;
   }
   .fav-pick:active { border-color: var(--primary); background: var(--primary-light); }
   .fav-pick .sub { font-weight: 400; color: var(--muted); font-size: 11px; }
@@ -276,20 +193,9 @@
   .fav-scroll::-webkit-scrollbar { display: none; }
 
   .fav-chip {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 500;
-    background: var(--primary-light);
-    color: var(--primary);
-    cursor: pointer;
-    border: none;
-    white-space: nowrap;
-    transition: background 0.15s;
+    flex-shrink: 0; display: flex; align-items: center; gap: 6px; padding: 10px 14px;
+    border-radius: 12px; font-size: 14px; font-weight: 500; background: var(--primary-light);
+    color: var(--primary); cursor: pointer; border: none; white-space: nowrap; transition: background 0.15s;
   }
   .fav-chip:active { background: #f0d5c8; }
   .fav-chip .ing-c { font-size: 11px; font-weight: 400; opacity: 0.6; }
@@ -302,20 +208,9 @@
   .cell-opt:active { background: var(--border); }
   .cell-opt .tag { font-size: 11px; color: var(--muted); }
 
-  .collapsible { }
   .coll-toggle {
-    background: none;
-    border: none;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 4px 0;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    width: 100%;
-    text-align: left;
+    background: none; border: none; font-size: 15px; font-weight: 600; cursor: pointer; padding: 4px 0;
+    color: var(--text); display: flex; align-items: center; gap: 6px; width: 100%; text-align: left;
   }
   .coll-toggle .arrow { transition: transform 0.2s; font-size: 12px; color: var(--muted); }
   .coll-toggle.open .arrow { transform: rotate(90deg); }
@@ -327,59 +222,29 @@
   .history-meal .hm-label { font-weight: 500; color: var(--text); min-width: 60px; }
 
   .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-  .btn-ghost {
-    background: none;
-    border: 1.5px solid var(--border);
-    color: var(--muted);
-    font-size: 13px;
-    font-weight: 500;
-    padding: 8px 14px;
-    border-radius: 10px;
-    cursor: pointer;
-  }
+  .btn-ghost { background: none; border: 1.5px solid var(--border); color: var(--muted); font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: 10px; cursor: pointer; }
   .btn-ghost:active { background: var(--border); }
 
   .toast {
-    position: fixed;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--text);
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 500;
-    z-index: 200;
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-    white-space: nowrap;
+    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: #fff; padding: 10px 18px; border-radius: 10px;
+    font-size: 14px; font-weight: 500; z-index: 200; opacity: 0; transition: opacity 0.3s;
+    pointer-events: none; white-space: nowrap;
   }
   .toast.show { opacity: 1; }
 
   .install-banner {
-    display: none;
-    background: var(--primary);
-    color: #fff;
-    padding: 14px 16px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    text-align: center;
-    box-shadow: 0 -2px 12px rgba(0,0,0,0.12);
+    display: none; background: var(--primary); color: #fff; padding: 14px 16px;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; font-size: 15px;
+    font-weight: 500; cursor: pointer; text-align: center; box-shadow: 0 -2px 12px rgba(0,0,0,0.12);
   }
 
   @media (max-width: 420px) {
     .meal-input { padding: 7px 8px; font-size: 13px; }
-    .plan-table th { font-size: 11px; }
-    .plan-table td:first-child { font-size: 11px; }
-    .plan-table td:first-child .dow { font-size: 9px; }
+    .mode-a th { font-size: 11px; }
+    .mode-b .meal-input { min-width: 64px; font-size: 12px; padding: 6px 6px; }
+    .mode-b th { font-size: 10px; padding: 6px 3px 8px; }
+    .mode-b th:first-child, .mode-b td:first-child { min-width: 56px; max-width: 56px; }
   }
 </style>
 </head>
@@ -388,7 +253,7 @@
 <div class="header">
   <div class="header-top">
     <h1>🍽 <span>Meal</span> Planner</h1>
-    <button class="btn-ghost" id="export-btn" onclick="exportData()" style="font-size:12px;padding:6px 10px">📤</button>
+    <button class="btn-ghost" id="export-btn" style="font-size:12px;padding:6px 10px">📤</button>
   </div>
   <div class="subtitle" id="range-label"></div>
   <div class="profile-bar" id="profile-bar"></div>
@@ -409,12 +274,11 @@
 <div class="section">
   <div class="section-header">
     <div class="section-title">📅 Weekly Plan</div>
+    <div class="layout-toggle" id="layout-toggle"></div>
   </div>
-  <div class="plan-wrap">
-    <table class="plan-table">
-      <thead>
-        <tr><th></th><th>🌅 Breakfast</th><th>☀️ Lunch</th><th>🍿 Snacks</th><th>🌙 Dinner</th></tr>
-      </thead>
+  <div class="plan-wrap" id="plan-wrap">
+    <table class="plan-table mode-a" id="plan-table">
+      <thead><tr><th></th><th>🌅 Breakfast</th><th>☀️ Lunch</th><th>🍿 Snacks</th><th>🌙 Dinner</th></tr></thead>
       <tbody id="plan-body"></tbody>
     </table>
   </div>
@@ -466,10 +330,11 @@
   const MEALS = ['breakfast','lunch','snacks','dinner'];
   const MEAL_ICON = { breakfast:'🌅', lunch:'☀️', snacks:'🍿', dinner:'🌙' };
   const MEAL_LABEL = { breakfast:'Breakfast', lunch:'Lunch', snacks:'Snacks', dinner:'Dinner' };
-  const KEY = 'mealplanner-v7';
+  const KEY = 'mealplanner-v8';
 
   let app = loadApp();
   let expanded = null;
+  let layoutMode = null;
 
   function P() { return app.profiles[app.activeProfile]; }
   function state() { return P().data; }
@@ -506,13 +371,13 @@
         const p = JSON.parse(raw);
         if (p && p.profiles && Array.isArray(p.profiles)) return p;
         if (p && p.meals) {
-          const migrated = { activeProfile: 0, profiles: [{ name: 'ozimaus', data: { meals: p.meals, fridge: p.fridge || [], grocery: p.grocery || [], favorites: p.favorites || [] } }] };
+          const migrated = { activeProfile: 0, profiles: [{ name: 'ozimaus', layout: 'days', data: { meals: p.meals, fridge: p.fridge || [], grocery: p.grocery || [], favorites: p.favorites || [] } }] };
           saveApp(migrated);
           return migrated;
         }
       }
     } catch (e) {}
-    return { activeProfile: 0, profiles: [{ name: 'ozimaus', data: { meals: {}, fridge: [], grocery: [], favorites: [] } }, { name: 'madsiebear', data: { meals: {}, fridge: [], grocery: [], favorites: [] } }] };
+    return { activeProfile: 0, profiles: [{ name: 'ozimaus', layout: 'days', data: { meals: {}, fridge: [], grocery: [], favorites: [] } }, { name: 'madsiebear', layout: 'days', data: { meals: {}, fridge: [], grocery: [], favorites: [] } }] };
   }
 
   function saveApp(a) { localStorage.setItem(KEY, JSON.stringify(a)); }
@@ -521,8 +386,7 @@
   function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
   function toast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
+    t.textContent = msg; t.classList.add('show');
     clearTimeout(t._timer);
     t._timer = setTimeout(() => t.classList.remove('show'), 2200);
   }
@@ -542,10 +406,20 @@
   function addProfile() {
     const name = prompt('Profile name:');
     if (!name || !name.trim()) return;
-    app.profiles.push({ name: name.trim(), data: { meals: {}, fridge: [], grocery: [], favorites: [] } });
+    app.profiles.push({ name: name.trim(), layout: 'days', data: { meals: {}, fridge: [], grocery: [], favorites: [] } });
     app.activeProfile = app.profiles.length - 1;
     save();
     fullRender();
+  }
+
+  function setLayout(mode) {
+    if (P().layout === mode) return;
+    P().layout = mode;
+    layoutMode = mode;
+    save();
+    expanded = null;
+    renderLayoutToggle();
+    renderPlanBody();
   }
 
   function renderProfiles() {
@@ -559,10 +433,16 @@
       bar.appendChild(btn);
     });
     const add = document.createElement('button');
-    add.className = 'profile-btn';
-    add.textContent = '+';
-    add.onclick = addProfile;
+    add.className = 'profile-btn'; add.textContent = '+'; add.onclick = addProfile;
     bar.appendChild(add);
+  }
+
+  function renderLayoutToggle() {
+    const el = document.getElementById('layout-toggle');
+    const cur = P().layout || 'days';
+    el.innerHTML =
+      '<button class="layout-btn' + (cur === 'days' ? ' active' : '') + '" onclick="setLayout(\'days\')">📅 Days</button>' +
+      '<button class="layout-btn' + (cur === 'meals' ? ' active' : '') + '" onclick="setLayout(\'meals\')">🍽 Meals</button>';
   }
 
   function addFridge() {
@@ -570,20 +450,13 @@
     const text = input.value.trim();
     if (!text) return;
     state().fridge.push({ text, emoji: randomEmoji() });
-    save();
-    input.value = '';
-    renderFridge();
-    input.focus();
+    save(); input.value = ''; renderFridge(); input.focus();
   }
 
   function removeFridge(i) {
     const items = document.querySelectorAll('#fridge-list .item');
     if (items[i]) items[i].classList.add('removing');
-    setTimeout(() => {
-      state().fridge.splice(i, 1);
-      save();
-      renderFridge();
-    }, 200);
+    setTimeout(() => { state().fridge.splice(i, 1); save(); renderFridge(); }, 200);
   }
 
   function renderFridge() {
@@ -605,24 +478,16 @@
     const text = input.value.trim();
     if (!text) return;
     state().grocery.push({ text, checked: false });
-    save();
-    input.value = '';
-    renderGrocery();
-    input.focus();
+    save(); input.value = ''; renderGrocery(); input.focus();
   }
 
   function toggleGrocery(i) {
     if (!state().grocery[i]) return;
     state().grocery[i].checked = !state().grocery[i].checked;
-    save();
-    renderGrocery();
+    save(); renderGrocery();
   }
 
-  function deleteGrocery(i) {
-    state().grocery.splice(i, 1);
-    save();
-    renderGrocery();
-  }
+  function deleteGrocery(i) { state().grocery.splice(i, 1); save(); renderGrocery(); }
 
   function renderGrocery() {
     const list = document.getElementById('grocery-list');
@@ -650,8 +515,7 @@
     if (!state().meals[date]) state().meals[date] = {};
     if (!state().meals[date][meal]) state().meals[date][meal] = { value: '', ingredients: [] };
     state().meals[date][meal].value = val;
-    save();
-    updateStar(date, meal);
+    save(); updateStar(date, meal);
   }
   function updateStar(date, meal) {
     const s = document.getElementById('star-' + date + '-' + meal);
@@ -663,26 +527,18 @@
     if (!val) { toast('Write a meal name first'); return; }
     const ings = getIngs(date, meal);
     if (state().favorites.some(f => f.name.toLowerCase() === val.toLowerCase() && f.meal === meal)) {
-      toast('Already saved for ' + MEAL_LABEL[meal]);
-      return;
+      toast('Already saved for ' + MEAL_LABEL[meal]); return;
     }
     state().favorites.push({ name: val, meal, ingredients: ings.map(i => ({ ...i })) });
-    save();
-    renderFavorites();
-    toast('⭐ Saved "' + val + '"');
+    save(); renderFavorites(); toast('⭐ Saved "' + val + '"');
   }
 
-  function deleteFav(i) {
-    state().favorites.splice(i, 1);
-    save();
-    renderFavorites();
-  }
+  function deleteFav(i) { state().favorites.splice(i, 1); save(); renderFavorites(); }
 
   function fillCell(date, meal, fav) {
     if (!state().meals[date]) state().meals[date] = {};
     state().meals[date][meal] = { value: fav.name, ingredients: fav.ingredients.map(i => ({ ...i })) };
-    save();
-    renderPlan();
+    save(); renderPlanBody();
     if (expanded === date + '-' + meal) refreshIngs(date, meal);
     document.querySelectorAll('.cell-picker.open').forEach(p => p.classList.remove('open'));
     toast('✓ Filled with "' + fav.name + '"');
@@ -690,12 +546,10 @@
 
   function showCellPicker(fav, btnEl) {
     document.querySelectorAll('.cell-picker.open').forEach(p => p.classList.remove('open'));
-    const dates = getDates();
-    const today = todayStr();
     if (btnEl.nextElementSibling && btnEl.nextElementSibling.classList.contains('cell-picker')) {
-      btnEl.nextElementSibling.classList.toggle('open');
-      return;
+      btnEl.nextElementSibling.classList.toggle('open'); return;
     }
+    const dates = getDates(); const today = todayStr();
     let html = '';
     dates.forEach(d => {
       if (d < today) return;
@@ -705,19 +559,15 @@
       });
     });
     const picker = document.createElement('div');
-    picker.className = 'cell-picker open';
-    picker.innerHTML = html;
-    btnEl.parentNode.insertBefore(picker, btnEl.nextSibling);
+    picker.className = 'cell-picker open'; picker.innerHTML = html;
+    if (html) btnEl.parentNode.insertBefore(picker, btnEl.nextSibling);
   }
 
   function renderFavorites() {
     const container = document.getElementById('fav-content');
     const favs = state().favorites || [];
     document.getElementById('fav-count').textContent = favs.length ? favs.length + ' saved' : '';
-    if (!favs.length) {
-      container.innerHTML = '<div class="empty"><span class="hint">⭐</span>Save meals you love by tapping ★ on any meal</div>';
-      return;
-    }
+    if (!favs.length) { container.innerHTML = '<div class="empty"><span class="hint">⭐</span>Save meals you love by tapping ★ on any meal</div>'; return; }
     let html = '';
     MEALS.forEach(meal => {
       const filtered = favs.filter(f => f.meal === meal);
@@ -735,15 +585,11 @@
   function onMealClick(date, meal) {
     const key = date + '-' + meal;
     if (expanded === key) return;
-    if (expanded) {
-      const prev = document.getElementById('ing-panel-' + expanded);
-      if (prev) prev.classList.remove('open');
-    }
+    if (expanded) { const prev = document.getElementById('ing-panel-' + expanded); if (prev) prev.classList.remove('open'); }
     expanded = key;
     const panel = document.getElementById('ing-panel-' + key);
     if (!panel) return;
-    panel.classList.add('open');
-    refreshIngs(date, meal);
+    panel.classList.add('open'); refreshIngs(date, meal);
   }
 
   function addIng(date, meal) {
@@ -755,18 +601,13 @@
     if (!state().meals[date]) state().meals[date] = {};
     if (!state().meals[date][meal]) state().meals[date][meal] = { value: '', ingredients: [] };
     state().meals[date][meal].ingredients.push({ text, emoji: randomEmoji() });
-    save();
-    input.value = '';
-    refreshIngs(date, meal);
-    input.focus();
+    save(); input.value = ''; refreshIngs(date, meal); input.focus();
   }
 
   function removeIng(date, meal, idx) {
     const m = state().meals[date] && state().meals[date][meal];
     if (!m) return;
-    m.ingredients.splice(idx, 1);
-    save();
-    refreshIngs(date, meal);
+    m.ingredients.splice(idx, 1); save(); refreshIngs(date, meal);
   }
 
   function refreshIngs(date, meal) {
@@ -793,41 +634,68 @@
     if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') addIng(date, meal); });
   }
 
-  function renderPlan() {
+  function makeMealCell(date, meal, isExpanded) {
+    const val = getVal(date, meal);
+    const key = date + '-' + meal;
+    return '<td class="meal-cell"><div class="meal-input-wrap"><input class="meal-input" value="' + esc(val) + '" placeholder="..." onclick="onMealClick(\'' + date + '\',\'' + meal + '\')" oninput="setVal(\'' + date + '\',\'' + meal + '\',this.value)"><button class="star-btn' + (val ? ' show' : '') + '" id="star-' + key + '" onclick="event.stopPropagation();saveAsFav(\'' + date + '\',\'' + meal + '\')">★</button></div><div class="ing-panel' + (isExpanded ? ' open' : '') + '" id="ing-panel-' + key + '"></div></td>';
+  }
+
+  function renderPlanBody() {
+    const mode = P().layout || 'days';
     const dates = getDates();
     const today = todayStr();
     document.getElementById('range-label').textContent = fmtShort(dates[0]) + ' — ' + fmtShort(dates[7]);
+
+    const table = document.getElementById('plan-table');
+    table.className = 'plan-table ' + (mode === 'meals' ? 'mode-b' : 'mode-a');
+
+    const thead = table.querySelector('thead');
     const tbody = document.getElementById('plan-body');
-    tbody.innerHTML = '';
-    dates.forEach(date => {
-      const tr = document.createElement('tr');
-      const f = fmtFull(date);
-      const cls = date === today ? 'today' : date < today ? 'past' : '';
-      if (cls) tr.className = cls;
-      let cells = '<td><span class="dow">' + f.dow + '</span>' + f.mon + ' ' + f.num + '</td>';
-      MEALS.forEach(meal => {
-        const key = date + '-' + meal;
-        const val = getVal(date, meal);
-        const isExpanded = expanded === key;
-        cells += '<td class="meal-cell"><div class="meal-input-wrap"><input class="meal-input" value="' + esc(val) + '" placeholder="..." onclick="onMealClick(\'' + date + '\',\'' + meal + '\')" oninput="setVal(\'' + date + '\',\'' + meal + '\',this.value)"><button class="star-btn' + (val ? ' show' : '') + '" id="star-' + key + '" onclick="event.stopPropagation();saveAsFav(\'' + date + '\',\'' + meal + '\')">★</button></div><div class="ing-panel' + (isExpanded ? ' open' : '') + '" id="ing-panel-' + key + '"></div></td>';
+
+    if (mode === 'days') {
+      thead.innerHTML = '<tr><th></th><th>🌅 Breakfast</th><th>☀️ Lunch</th><th>🍿 Snacks</th><th>🌙 Dinner</th></tr>';
+      tbody.innerHTML = '';
+      dates.forEach(date => {
+        const tr = document.createElement('tr');
+        const f = fmtFull(date);
+        const cls = date === today ? 'today' : date < today ? 'past' : '';
+        if (cls) tr.className = cls;
+        let cells = '<td><span class="dow">' + f.dow + '</span>' + f.mon + ' ' + f.num + '</td>';
+        MEALS.forEach(meal => cells += makeMealCell(date, meal, expanded === date + '-' + meal));
+        tr.innerHTML = cells;
+        tbody.appendChild(tr);
       });
-      tr.innerHTML = cells;
-      tbody.appendChild(tr);
-    });
+    } else {
+      thead.innerHTML = '<tr><th></th>' + dates.map(d => {
+        const f = fmtFull(d);
+        const isToday = d === today;
+        return '<th class="' + (isToday ? 'today-highlight' : '') + '"><span class="dow">' + f.dow + '</span>' + f.num + ' ' + f.mon + '</th>';
+      }).join('') + '</tr>';
+      tbody.innerHTML = '';
+      MEALS.forEach(meal => {
+        const tr = document.createElement('tr');
+        let cells = '<td><div class="meal-row-label"><span class="icon">' + MEAL_ICON[meal] + '</span> ' + MEAL_LABEL[meal] + '</div></td>';
+        dates.forEach(date => cells += makeMealCell(date, meal, expanded === date + '-' + meal));
+        tr.innerHTML = cells;
+        tbody.appendChild(tr);
+      });
+    }
+
     if (expanded) {
       const parts = expanded.split('-');
       refreshIngs(parts[0], parts[1]);
     }
   }
 
-  function renderHistory() {
+  function toggleHistory() {
+    const open = document.getElementById('history-content').style.display !== 'block';
+    document.getElementById('hist-toggle').classList.toggle('open', open);
+    document.getElementById('history-content').style.display = open ? 'block' : 'none';
+    if (!open) return;
     const container = document.getElementById('history-content');
     const today = todayStr();
     const allDates = Object.keys(state().meals || {}).filter(d => d < today).sort().reverse();
-    if (!allDates.length) {
-      container.innerHTML = '<div class="empty"><span class="hint">📜</span>No past meals recorded</div>';
-      return;
-    }
+    if (!allDates.length) { container.innerHTML = '<div class="empty"><span class="hint">📜</span>No past meals recorded</div>'; return; }
     let html = '';
     allDates.forEach(d => {
       const meals = state().meals[d];
@@ -844,14 +712,6 @@
       html += '</div>';
     });
     container.innerHTML = html || '<div class="empty"><span class="hint">📜</span>No past meals recorded</div>';
-  }
-
-  let historyOpen = false;
-  function toggleHistory() {
-    historyOpen = !historyOpen;
-    document.getElementById('hist-toggle').classList.toggle('open', historyOpen);
-    document.getElementById('history-content').style.display = historyOpen ? 'block' : 'none';
-    if (historyOpen) renderHistory();
   }
 
   function exportData() {
@@ -872,17 +732,10 @@
       try {
         const data = JSON.parse(e.target.result);
         if (data && data.profiles && Array.isArray(data.profiles)) {
-          app = data;
-          save();
-          expanded = null;
-          fullRender();
+          app = data; save(); expanded = null; fullRender();
           toast('✓ Backup restored');
-        } else {
-          toast('Invalid backup file');
-        }
-      } catch (err) {
-        toast('Error reading file');
-      }
+        } else { toast('Invalid backup file'); }
+      } catch (err) { toast('Error reading file'); }
     };
     reader.readAsText(file);
     event.target.value = '';
@@ -895,33 +748,23 @@
   document.getElementById('grocery-input').addEventListener('keydown', e => { if (e.key === 'Enter') addGrocery(); });
   document.getElementById('clear-checked').addEventListener('click', () => {
     state().grocery = state().grocery.filter(i => !i.checked);
-    save();
-    renderGrocery();
+    save(); renderGrocery();
   });
 
   function fullRender() {
     renderProfiles();
-    renderPlan();
+    renderLayoutToggle();
+    renderPlanBody();
     renderFridge();
     renderGrocery();
     renderFavorites();
-    if (historyOpen) renderHistory();
   }
   fullRender();
 
   let deferredPrompt;
-  window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    deferredPrompt = e;
-    document.getElementById('install-banner').style.display = 'block';
-  });
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; document.getElementById('install-banner').style.display = 'block'; });
   document.getElementById('install-banner').addEventListener('click', async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const r = await deferredPrompt.userChoice;
-      if (r.outcome === 'accepted') document.getElementById('install-banner').style.display = 'none';
-      deferredPrompt = null;
-    }
+    if (deferredPrompt) { deferredPrompt.prompt(); const r = await deferredPrompt.userChoice; if (r.outcome === 'accepted') document.getElementById('install-banner').style.display = 'none'; deferredPrompt = null; }
   });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 </script>
