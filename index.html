@@ -34,12 +34,18 @@
     padding: 0 16px 100px;
     min-height: 100vh;
   }
+
   .header {
-    padding: 52px 0 12px;
+    padding: 52px 0 8px;
     position: sticky;
     top: 0;
     z-index: 10;
     background: var(--bg);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   .header h1 {
     font-size: 26px;
@@ -51,6 +57,29 @@
   }
   .header h1 span { color: var(--primary); }
   .header .subtitle { font-size: 14px; color: var(--muted); margin-top: 2px; }
+
+  .profile-bar {
+    display: flex;
+    gap: 6px;
+    margin: 8px 0 4px;
+  }
+  .profile-btn {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .profile-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .profile-btn:active { opacity: 0.7; }
 
   .section {
     background: var(--card);
@@ -108,7 +137,6 @@
   .btn:active { opacity: 0.7; }
   .btn-sm { padding: 8px 14px; font-size: 13px; border-radius: 8px; font-weight: 500; }
   .btn-tiny { padding: 4px 10px; font-size: 12px; border-radius: 6px; font-weight: 500; }
-  .btn-block { width: 100%; }
 
   .item-list { list-style: none; }
   .item {
@@ -123,22 +151,9 @@
   @keyframes slideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(20px); } }
   .item.removing { animation: fadeOut 0.2s ease forwards; }
-
   .item .emoji { font-size: 18px; flex-shrink: 0; cursor: pointer; }
-  .item label {
-    flex: 1;
-    font-size: 15px;
-    cursor: pointer;
-    word-break: break-word;
-  }
-  .item .del {
-    background: none;
-    border: none;
-    color: #c7c7cc;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 4px;
-  }
+  .item label { flex: 1; font-size: 15px; cursor: pointer; word-break: break-word; }
+  .item .del { background: none; border: none; color: #c7c7cc; font-size: 16px; cursor: pointer; padding: 4px; }
   .item .del:active { color: var(--red); }
 
   .check {
@@ -180,18 +195,8 @@
     white-space: nowrap;
   }
   .plan-table th:first-child { width: 72px; }
-  .plan-table td {
-    padding: 4px 4px 8px;
-    vertical-align: top;
-  }
-  .plan-table td:first-child {
-    font-size: 12px;
-    font-weight: 600;
-    padding-top: 8px;
-    white-space: nowrap;
-    color: var(--text);
-    line-height: 1.3;
-  }
+  .plan-table td { padding: 4px 4px 8px; vertical-align: top; }
+  .plan-table td:first-child { font-size: 12px; font-weight: 600; padding-top: 8px; white-space: nowrap; color: var(--text); line-height: 1.3; }
   .plan-table td:first-child .dow { font-size: 10px; font-weight: 400; color: var(--muted); display: block; }
   .plan-table tr.today td:first-child { color: var(--primary); }
   .plan-table tr.today td:first-child .dow { color: var(--primary); opacity: 0.6; }
@@ -226,7 +231,7 @@
     transition: opacity 0.2s, transform 0.15s;
     line-height: 1;
   }
-  .star-btn.show { opacity: 1; color: #ffcc02; }
+  .star-btn.show { opacity: 1; color: var(--yellow); }
   .star-btn.show:active { transform: scale(1.3); }
 
   .ing-panel {
@@ -237,54 +242,17 @@
     display: none;
   }
   .ing-panel.open { display: block; }
-  .ing-panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    gap: 8px;
-  }
+  .ing-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
   .ing-panel-header .label { font-size: 12px; font-weight: 600; color: var(--muted); }
-
-  .ing-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
+  .ing-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
   .ing-row:last-of-type { border-bottom: none; }
-  .ing-row .del-ing {
-    background: none;
-    border: none;
-    color: #c7c7cc;
-    font-size: 14px;
-    cursor: pointer;
-    padding: 2px;
-  }
+  .ing-row .del-ing { background: none; border: none; color: #c7c7cc; font-size: 14px; cursor: pointer; padding: 2px; }
   .ing-row .del-ing:active { color: var(--red); }
   .ing-add-row { display: flex; gap: 6px; margin-top: 6px; }
-  .ing-add-row input {
-    flex: 1;
-    padding: 6px 10px;
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    font-size: 13px;
-    font-family: inherit;
-    background: var(--card);
-  }
+  .ing-add-row input { flex: 1; padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; background: var(--card); }
   .ing-add-row input:focus { outline: none; border-color: var(--primary); }
 
-  .fav-picker-row {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    padding: 4px 0;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
+  .fav-picker-row { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .fav-picker-row::-webkit-scrollbar { display: none; }
   .fav-pick {
     flex-shrink: 0;
@@ -299,24 +267,12 @@
     transition: all 0.15s;
   }
   .fav-pick:active { border-color: var(--primary); background: var(--primary-light); }
-  .fav-pick .sub { font-weight: 400; color: var(--muted); font-size: 11px; margin-left: 4px; }
+  .fav-pick .sub { font-weight: 400; color: var(--muted); font-size: 11px; }
 
   .fav-category { margin-bottom: 14px; }
   .fav-category:last-child { margin-bottom: 0; }
-  .fav-cat-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-  .fav-scroll {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 2px 0 4px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
+  .fav-cat-label { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
+  .fav-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 4px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .fav-scroll::-webkit-scrollbar { display: none; }
 
   .fav-chip {
@@ -336,40 +292,39 @@
     transition: background 0.15s;
   }
   .fav-chip:active { background: #f0d5c8; }
-  .fav-chip .ing-c { font-size: 11px; font-weight: 400; opacity: 0.6; margin-left: 2px; }
-  .fav-chip .del-f {
-    background: none;
-    border: none;
-    color: var(--primary);
-    font-size: 13px;
-    cursor: pointer;
-    padding: 0 0 0 4px;
-    opacity: 0.4;
-  }
+  .fav-chip .ing-c { font-size: 11px; font-weight: 400; opacity: 0.6; }
+  .fav-chip .del-f { background: none; border: none; color: var(--primary); font-size: 13px; cursor: pointer; padding: 0 0 0 4px; opacity: 0.4; }
   .fav-chip .del-f:active { opacity: 1; }
 
-  .cell-picker {
-    background: var(--bg);
-    border-radius: 10px;
-    padding: 8px;
-    margin-top: 8px;
-    display: none;
-  }
+  .cell-picker { background: var(--bg); border-radius: 10px; padding: 8px; margin-top: 8px; display: none; }
   .cell-picker.open { display: block; }
-  .cell-opt {
-    display: block;
-    width: 100%;
-    text-align: left;
-    padding: 8px 10px;
-    border: none;
-    background: none;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background 0.1s;
-  }
+  .cell-opt { display: block; width: 100%; text-align: left; padding: 8px 10px; border: none; background: none; font-size: 14px; cursor: pointer; border-radius: 6px; }
   .cell-opt:active { background: var(--border); }
   .cell-opt .tag { font-size: 11px; color: var(--muted); }
+
+  .collapsible { }
+  .coll-toggle {
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 0;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    text-align: left;
+  }
+  .coll-toggle .arrow { transition: transform 0.2s; font-size: 12px; color: var(--muted); }
+  .coll-toggle.open .arrow { transform: rotate(90deg); }
+
+  .history-day { margin-bottom: 12px; }
+  .history-day:last-child { margin-bottom: 0; }
+  .history-date { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .history-meal { font-size: 13px; color: var(--muted); padding: 2px 0; display: flex; gap: 6px; }
+  .history-meal .hm-label { font-weight: 500; color: var(--text); min-width: 60px; }
 
   .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
   .btn-ghost {
@@ -431,8 +386,12 @@
 <body>
 
 <div class="header">
-  <h1>🍽 <span>Meal</span> Planner</h1>
+  <div class="header-top">
+    <h1>🍽 <span>Meal</span> Planner</h1>
+    <button class="btn-ghost" id="export-btn" onclick="exportData()" style="font-size:12px;padding:6px 10px">📤</button>
+  </div>
   <div class="subtitle" id="range-label"></div>
+  <div class="profile-bar" id="profile-bar"></div>
 </div>
 
 <div class="section">
@@ -485,6 +444,16 @@
   </div>
 </div>
 
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">📜 Past Weeks</div>
+  </div>
+  <button class="coll-toggle" id="hist-toggle" onclick="toggleHistory()"><span class="arrow">▶</span> Show past days</button>
+  <div id="history-content" style="display:none;margin-top:12px"></div>
+</div>
+
+<input type="file" id="import-input" accept=".json" style="display:none" onchange="importData(event)">
+
 <div class="toast" id="toast"></div>
 <div class="install-banner" id="install-banner">
   📲 Install <strong>Meal Planner</strong> for offline use
@@ -497,10 +466,13 @@
   const MEALS = ['breakfast','lunch','snacks','dinner'];
   const MEAL_ICON = { breakfast:'🌅', lunch:'☀️', snacks:'🍿', dinner:'🌙' };
   const MEAL_LABEL = { breakfast:'Breakfast', lunch:'Lunch', snacks:'Snacks', dinner:'Dinner' };
-  const KEY = 'mealplanner-v6';
+  const KEY = 'mealplanner-v7';
 
-  let state = load();
+  let app = loadApp();
   let expanded = null;
+
+  function P() { return app.profiles[app.activeProfile]; }
+  function state() { return P().data; }
 
   function todayStr() {
     const d = new Date();
@@ -522,26 +494,31 @@
     const date = new Date(d + 'T12:00:00');
     return { dow: DAYS_LONG[date.getDay()], num: date.getDate(), mon: MONTHS[date.getMonth()] };
   }
-
   function fmtShort(d) {
     const date = new Date(d + 'T12:00:00');
     return DAYS_SHORT[date.getDay()] + ' ' + date.getDate();
   }
 
-  function load() {
+  function loadApp() {
     try {
       const raw = localStorage.getItem(KEY);
       if (raw) {
         const p = JSON.parse(raw);
-        if (p && typeof p === 'object') return p;
+        if (p && p.profiles && Array.isArray(p.profiles)) return p;
+        if (p && p.meals) {
+          const migrated = { activeProfile: 0, profiles: [{ name: 'Oğuzcan', data: { meals: p.meals, fridge: p.fridge || [], grocery: p.grocery || [], favorites: p.favorites || [] } }] };
+          saveApp(migrated);
+          return migrated;
+        }
       }
     } catch (e) {}
-    return { meals: {}, fridge: [], grocery: [], favorites: [] };
+    return { activeProfile: 0, profiles: [{ name: 'Oğuzcan', data: { meals: {}, fridge: [], grocery: [], favorites: [] } }] };
   }
 
-  function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
-  function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  function saveApp(a) { localStorage.setItem(KEY, JSON.stringify(a)); }
+  function save() { saveApp(app); }
 
+  function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
   function toast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -555,11 +532,44 @@
     return e[Math.floor(Math.random() * e.length)];
   }
 
+  function switchProfile(idx) {
+    app.activeProfile = idx;
+    save();
+    expanded = null;
+    fullRender();
+  }
+
+  function addProfile() {
+    const name = prompt('Profile name:');
+    if (!name || !name.trim()) return;
+    app.profiles.push({ name: name.trim(), data: { meals: {}, fridge: [], grocery: [], favorites: [] } });
+    app.activeProfile = app.profiles.length - 1;
+    save();
+    fullRender();
+  }
+
+  function renderProfiles() {
+    const bar = document.getElementById('profile-bar');
+    bar.innerHTML = '';
+    app.profiles.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'profile-btn' + (i === app.activeProfile ? ' active' : '');
+      btn.textContent = p.name;
+      btn.onclick = () => switchProfile(i);
+      bar.appendChild(btn);
+    });
+    const add = document.createElement('button');
+    add.className = 'profile-btn';
+    add.textContent = '+';
+    add.onclick = addProfile;
+    bar.appendChild(add);
+  }
+
   function addFridge() {
     const input = document.getElementById('fridge-input');
     const text = input.value.trim();
     if (!text) return;
-    state.fridge.push({ text, emoji: randomEmoji() });
+    state().fridge.push({ text, emoji: randomEmoji() });
     save();
     input.value = '';
     renderFridge();
@@ -570,7 +580,7 @@
     const items = document.querySelectorAll('#fridge-list .item');
     if (items[i]) items[i].classList.add('removing');
     setTimeout(() => {
-      state.fridge.splice(i, 1);
+      state().fridge.splice(i, 1);
       save();
       renderFridge();
     }, 200);
@@ -578,12 +588,9 @@
 
   function renderFridge() {
     const list = document.getElementById('fridge-list');
-    const items = state.fridge || [];
+    const items = state().fridge || [];
     document.getElementById('fridge-count').textContent = items.length ? items.length + ' items' : '';
-    if (!items.length) {
-      list.innerHTML = '<li class="empty"><span class="hint">🧊</span>What\'s in your fridge?</li>';
-      return;
-    }
+    if (!items.length) { list.innerHTML = '<li class="empty"><span class="hint">🧊</span>What\'s in your fridge?</li>'; return; }
     list.innerHTML = '';
     items.forEach((item, i) => {
       const li = document.createElement('li');
@@ -597,7 +604,7 @@
     const input = document.getElementById('grocery-input');
     const text = input.value.trim();
     if (!text) return;
-    state.grocery.push({ text, checked: false });
+    state().grocery.push({ text, checked: false });
     save();
     input.value = '';
     renderGrocery();
@@ -605,26 +612,23 @@
   }
 
   function toggleGrocery(i) {
-    if (!state.grocery[i]) return;
-    state.grocery[i].checked = !state.grocery[i].checked;
+    if (!state().grocery[i]) return;
+    state().grocery[i].checked = !state().grocery[i].checked;
     save();
     renderGrocery();
   }
 
   function deleteGrocery(i) {
-    state.grocery.splice(i, 1);
+    state().grocery.splice(i, 1);
     save();
     renderGrocery();
   }
 
   function renderGrocery() {
     const list = document.getElementById('grocery-list');
-    const items = state.grocery || [];
+    const items = state().grocery || [];
     document.getElementById('grocery-count').textContent = items.length ? items.length + ' items' : '';
-    if (!items.length) {
-      list.innerHTML = '<li class="empty"><span class="hint">🛒</span>Nothing to buy yet</li>';
-      return;
-    }
+    if (!items.length) { list.innerHTML = '<li class="empty"><span class="hint">🛒</span>Nothing to buy yet</li>'; return; }
     list.innerHTML = '';
     items.forEach((item, i) => {
       const li = document.createElement('li');
@@ -635,17 +639,17 @@
   }
 
   function getVal(date, meal) {
-    const m = state.meals[date] && state.meals[date][meal];
+    const m = state().meals[date] && state().meals[date][meal];
     return (m && m.value) || '';
   }
   function getIngs(date, meal) {
-    const m = state.meals[date] && state.meals[date][meal];
+    const m = state().meals[date] && state().meals[date][meal];
     return (m && m.ingredients) || [];
   }
   function setVal(date, meal, val) {
-    if (!state.meals[date]) state.meals[date] = {};
-    if (!state.meals[date][meal]) state.meals[date][meal] = { value: '', ingredients: [] };
-    state.meals[date][meal].value = val;
+    if (!state().meals[date]) state().meals[date] = {};
+    if (!state().meals[date][meal]) state().meals[date][meal] = { value: '', ingredients: [] };
+    state().meals[date][meal].value = val;
     save();
     updateStar(date, meal);
   }
@@ -658,25 +662,25 @@
     const val = getVal(date, meal);
     if (!val) { toast('Write a meal name first'); return; }
     const ings = getIngs(date, meal);
-    if (state.favorites.some(f => f.name.toLowerCase() === val.toLowerCase() && f.meal === meal)) {
+    if (state().favorites.some(f => f.name.toLowerCase() === val.toLowerCase() && f.meal === meal)) {
       toast('Already saved for ' + MEAL_LABEL[meal]);
       return;
     }
-    state.favorites.push({ name: val, meal, ingredients: ings.map(i => ({ ...i })) });
+    state().favorites.push({ name: val, meal, ingredients: ings.map(i => ({ ...i })) });
     save();
     renderFavorites();
     toast('⭐ Saved "' + val + '"');
   }
 
   function deleteFav(i) {
-    state.favorites.splice(i, 1);
+    state().favorites.splice(i, 1);
     save();
     renderFavorites();
   }
 
   function fillCell(date, meal, fav) {
-    if (!state.meals[date]) state.meals[date] = {};
-    state.meals[date][meal] = { value: fav.name, ingredients: fav.ingredients.map(i => ({ ...i })) };
+    if (!state().meals[date]) state().meals[date] = {};
+    state().meals[date][meal] = { value: fav.name, ingredients: fav.ingredients.map(i => ({ ...i })) };
     save();
     renderPlan();
     if (expanded === date + '-' + meal) refreshIngs(date, meal);
@@ -688,6 +692,10 @@
     document.querySelectorAll('.cell-picker.open').forEach(p => p.classList.remove('open'));
     const dates = getDates();
     const today = todayStr();
+    if (btnEl.nextElementSibling && btnEl.nextElementSibling.classList.contains('cell-picker')) {
+      btnEl.nextElementSibling.classList.toggle('open');
+      return;
+    }
     let html = '';
     dates.forEach(d => {
       if (d < today) return;
@@ -696,7 +704,6 @@
         html += '<button class="cell-opt" onclick="fillCell(\'' + d + '\',\'' + meal + '\',' + JSON.stringify(fav).replace(/'/g,"\\'").replace(/"/g,'&quot;') + ')">' + f.dow + ' ' + f.num + ' <span class="tag">' + MEAL_ICON[meal] + ' ' + MEAL_LABEL[meal] + '</span></button>';
       });
     });
-
     const picker = document.createElement('div');
     picker.className = 'cell-picker open';
     picker.innerHTML = html;
@@ -705,10 +712,10 @@
 
   function renderFavorites() {
     const container = document.getElementById('fav-content');
-    const favs = state.favorites || [];
+    const favs = state().favorites || [];
     document.getElementById('fav-count').textContent = favs.length ? favs.length + ' saved' : '';
     if (!favs.length) {
-      container.innerHTML = '<div class="empty"><span class="hint">⭐</span>Save meals you love by tapping ☆ on any meal</div>';
+      container.innerHTML = '<div class="empty"><span class="hint">⭐</span>Save meals you love by tapping ★ on any meal</div>';
       return;
     }
     let html = '';
@@ -716,9 +723,9 @@
       const filtered = favs.filter(f => f.meal === meal);
       if (!filtered.length) return;
       html += '<div class="fav-category"><div class="fav-cat-label">' + MEAL_ICON[meal] + ' ' + MEAL_LABEL[meal] + '</div><div class="fav-scroll">';
-      filtered.forEach((fav, fi) => {
+      filtered.forEach(fav => {
         const idx = favs.indexOf(fav);
-        html += '<button class="fav-chip" onclick="showCellPicker(favorites[' + idx + '], this)">' + esc(fav.name) + ' <span class="ing-c">' + (fav.ingredients ? fav.ingredients.length : 0) + ' ing</span><span class="del-f" onclick="event.stopPropagation();deleteFav(' + idx + ')">✕</span></button>';
+        html += '<button class="fav-chip" onclick="showCellPicker(state().favorites[' + idx + '], this)">' + esc(fav.name) + ' <span class="ing-c">' + (fav.ingredients ? fav.ingredients.length : 0) + ' ing</span><span class="del-f" onclick="event.stopPropagation();deleteFav(' + idx + ')">✕</span></button>';
       });
       html += '</div></div>';
     });
@@ -745,9 +752,9 @@
     if (!input) return;
     const text = input.value.trim();
     if (!text) return;
-    if (!state.meals[date]) state.meals[date] = {};
-    if (!state.meals[date][meal]) state.meals[date][meal] = { value: '', ingredients: [] };
-    state.meals[date][meal].ingredients.push({ text, emoji: randomEmoji() });
+    if (!state().meals[date]) state().meals[date] = {};
+    if (!state().meals[date][meal]) state().meals[date][meal] = { value: '', ingredients: [] };
+    state().meals[date][meal].ingredients.push({ text, emoji: randomEmoji() });
     save();
     input.value = '';
     refreshIngs(date, meal);
@@ -755,7 +762,7 @@
   }
 
   function removeIng(date, meal, idx) {
-    const m = state.meals[date] && state.meals[date][meal];
+    const m = state().meals[date] && state().meals[date][meal];
     if (!m) return;
     m.ingredients.splice(idx, 1);
     save();
@@ -767,7 +774,7 @@
     const panel = document.getElementById('ing-panel-' + key);
     if (!panel) return;
     const ings = getIngs(date, meal);
-    const mealFavs = (state.favorites || []).filter(f => f.meal === meal);
+    const mealFavs = (state().favorites || []).filter(f => f.meal === meal);
     let html = '<div class="ing-panel-header"><span class="label">INGREDIENTS</span></div>';
     ings.forEach((ing, i) => {
       html += '<div class="ing-row"><span>' + (ing.emoji || '🥘') + ' ' + esc(ing.text) + '</span><button class="del-ing" onclick="removeIng(\'' + date + '\',\'' + meal + '\',' + i + ')">✕</button></div>';
@@ -775,10 +782,9 @@
     html += '<div class="ing-add-row"><input id="ing-input-' + key + '" placeholder="Add ingredient..." autocomplete="off"><button class="btn btn-tiny" onclick="addIng(\'' + date + '\',\'' + meal + '\')">+</button></div>';
     if (mealFavs.length) {
       html += '<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)"><div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px">⭐ From Favorites</div><div class="fav-picker-row">';
-      mealFavs.forEach((fav, fi) => {
-        const idx = state.favorites.indexOf(fav);
-        const encoded = 'fav' + fi + '_' + date + '_' + meal;
-        html += '<button class="fav-pick" onclick="fillCell(\'' + date + '\',\'' + meal + '\',state.favorites[' + idx + ']);document.getElementById(\'ing-panel-' + key + '\').classList.remove(\'open\');expanded=null">' + esc(fav.name) + ' <span class="sub">' + (fav.ingredients ? fav.ingredients.length : 0) + ' ing</span></button>';
+      mealFavs.forEach(fav => {
+        const idx = state().favorites.indexOf(fav);
+        html += '<button class="fav-pick" onclick="fillCell(\'' + date + '\',\'' + meal + '\',state().favorites[' + idx + ']);document.getElementById(\'ing-panel-' + key + '\').classList.remove(\'open\');expanded=null">' + esc(fav.name) + ' <span class="sub">' + (fav.ingredients ? fav.ingredients.length : 0) + ' ing</span></button>';
       });
       html += '</div></div>';
     }
@@ -791,7 +797,6 @@
     const dates = getDates();
     const today = todayStr();
     document.getElementById('range-label').textContent = fmtShort(dates[0]) + ' — ' + fmtShort(dates[7]);
-
     const tbody = document.getElementById('plan-body');
     tbody.innerHTML = '';
     dates.forEach(date => {
@@ -815,20 +820,94 @@
     }
   }
 
+  function renderHistory() {
+    const container = document.getElementById('history-content');
+    const today = todayStr();
+    const allDates = Object.keys(state().meals || {}).filter(d => d < today).sort().reverse();
+    if (!allDates.length) {
+      container.innerHTML = '<div class="empty"><span class="hint">📜</span>No past meals recorded</div>';
+      return;
+    }
+    let html = '';
+    allDates.forEach(d => {
+      const meals = state().meals[d];
+      if (!meals) return;
+      const entries = MEALS.map(m => meals[m]).filter(m => m && m.value);
+      if (!entries.length) return;
+      const f = fmtFull(d);
+      html += '<div class="history-day"><div class="history-date">' + f.dow + ', ' + f.mon + ' ' + f.num + '</div>';
+      MEALS.forEach(m => {
+        const meal = meals[m];
+        if (!meal || !meal.value) return;
+        html += '<div class="history-meal"><span class="hm-label">' + MEAL_ICON[m] + '</span>' + esc(meal.value) + (meal.ingredients && meal.ingredients.length ? ' <span style="color:#bbb;font-size:11px">(' + meal.ingredients.length + ' ing)</span>' : '') + '</div>';
+      });
+      html += '</div>';
+    });
+    container.innerHTML = html || '<div class="empty"><span class="hint">📜</span>No past meals recorded</div>';
+  }
+
+  let historyOpen = false;
+  function toggleHistory() {
+    historyOpen = !historyOpen;
+    document.getElementById('hist-toggle').classList.toggle('open', historyOpen);
+    document.getElementById('history-content').style.display = historyOpen ? 'block' : 'none';
+    if (historyOpen) renderHistory();
+  }
+
+  function exportData() {
+    const blob = new Blob([JSON.stringify(app, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'meal-planner-backup.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('📤 Backup downloaded');
+  }
+
+  function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (data && data.profiles && Array.isArray(data.profiles)) {
+          app = data;
+          save();
+          expanded = null;
+          fullRender();
+          toast('✓ Backup restored');
+        } else {
+          toast('Invalid backup file');
+        }
+      } catch (err) {
+        toast('Error reading file');
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
+
+  document.getElementById('export-btn').addEventListener('click', exportData);
   document.getElementById('fridge-add').addEventListener('click', addFridge);
   document.getElementById('fridge-input').addEventListener('keydown', e => { if (e.key === 'Enter') addFridge(); });
   document.getElementById('grocery-add').addEventListener('click', addGrocery);
   document.getElementById('grocery-input').addEventListener('keydown', e => { if (e.key === 'Enter') addGrocery(); });
   document.getElementById('clear-checked').addEventListener('click', () => {
-    state.grocery = state.grocery.filter(i => !i.checked);
+    state().grocery = state().grocery.filter(i => !i.checked);
     save();
     renderGrocery();
   });
 
-  renderPlan();
-  renderFridge();
-  renderGrocery();
-  renderFavorites();
+  function fullRender() {
+    renderProfiles();
+    renderPlan();
+    renderFridge();
+    renderGrocery();
+    renderFavorites();
+    if (historyOpen) renderHistory();
+  }
+  fullRender();
 
   let deferredPrompt;
   window.addEventListener('beforeinstallprompt', e => {
