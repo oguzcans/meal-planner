@@ -2,169 +2,366 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#e07050">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%23e07050'/><text x='256' y='340' font-size='280' text-anchor='middle' fill='white'>🍽</text></svg>">
 <title>Meal Planner</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #e07050;
+    --primary-light: #fce8e0;
+    --bg: #f5f0eb;
+    --card: #ffffff;
+    --text: #2c2c2c;
+    --muted: #8e8e93;
+    --border: #e5e0db;
+    --green: #34c759;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #f5f5f5;
-    color: #333;
-    padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 0 0 80px 0;
     max-width: 600px;
     margin: 0 auto;
+    min-height: 100vh;
   }
-  h1 { font-size: 24px; margin-bottom: 4px; }
-  .subtitle { color: #888; font-size: 14px; margin-bottom: 20px; }
-  .day-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  .header {
+    background: var(--card);
+    padding: 56px 20px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 1px 0 var(--border);
   }
-  .day-card.today { border-left: 3px solid #4CAF50; }
-  .day-card.past { opacity: 0.6; }
-  .day-header {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #eee;
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
   }
-  .day-header .date { color: #888; font-weight: 400; }
-  .meal-row { margin-bottom: 8px; }
-  .meal-label {
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .header h1 span { color: var(--primary); }
+  .header .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .days-wrap {
+    padding: 12px 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 108px;
+    z-index: 9;
+  }
+  .days-wrap::-webkit-scrollbar { display: none; }
+  .days-scroll {
+    display: flex;
+    gap: 8px;
+  }
+  .day-tab {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    border-radius: 20px;
     font-size: 13px;
     font-weight: 500;
-    color: #666;
-    margin-bottom: 4px;
+    background: var(--bg);
+    color: var(--muted);
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .day-tab.active {
+    background: var(--primary);
+    color: #fff;
+  }
+  .day-tab.today:not(.active) {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  #content {
+    padding: 16px;
+  }
+  .day-card {
+    display: none;
+    animation: fadeIn 0.25s ease;
+  }
+  .day-card.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .day-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .day-title .badge {
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+  .meal-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .meal-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .meal-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .meal-icon.breakfast { background: #fff5e0; }
+  .meal-icon.lunch { background: #e0f5e9; }
+  .meal-icon.dinner { background: #f0e0ff; }
+  .meal-label {
+    font-size: 15px;
+    font-weight: 600;
   }
   .meal-input {
     width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-size: 15px;
     font-family: inherit;
-    background: #fafafa;
+    background: var(--bg);
     resize: vertical;
-    min-height: 38px;
-    transition: border-color 0.2s;
+    min-height: 44px;
+    line-height: 1.4;
+    transition: border-color 0.2s, background 0.2s;
   }
   .meal-input:focus {
     outline: none;
-    border-color: #4CAF50;
-    background: #fff;
+    border-color: var(--primary);
+    background: var(--card);
   }
-  .section-title {
+  .meal-input::placeholder { color: #c7c7cc; }
+
+  .grocery-section {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .grocery-section h2 {
     font-size: 18px;
-    font-weight: 600;
-    margin: 24px 0 12px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   .grocery-input-wrap {
     display: flex;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
   .grocery-input {
     flex: 1;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-size: 15px;
     font-family: inherit;
+    background: var(--bg);
   }
-  .grocery-input:focus { outline: none; border-color: #4CAF50; }
+  .grocery-input:focus { outline: none; border-color: var(--primary); }
+  .grocery-input::placeholder { color: #c7c7cc; }
+
   .btn {
-    padding: 10px 16px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    background: #4CAF50;
+    background: var(--primary);
     color: #fff;
     white-space: nowrap;
+    transition: opacity 0.15s;
   }
-  .btn:active { opacity: 0.8; }
+  .btn:active { opacity: 0.7; }
+
   .grocery-list { list-style: none; }
   .grocery-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: #fff;
-    border-radius: 8px;
-    margin-bottom: 6px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    transition: opacity 0.2s;
   }
+  .grocery-item:last-child { border-bottom: none; }
   .grocery-item label {
     flex: 1;
-    font-size: 14px;
+    font-size: 15px;
     cursor: pointer;
     word-break: break-word;
   }
-  .grocery-item input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
-  .grocery-item.checked label { text-decoration: line-through; color: #bbb; }
+  .checkbox-wrap {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .checkbox-wrap.checked {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .checkbox-wrap.checked::after {
+    content: '✓';
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .grocery-item.checked label { text-decoration: line-through; color: var(--muted); }
   .grocery-item .delete {
     background: none;
     border: none;
-    color: #ccc;
+    color: #c7c7cc;
     font-size: 18px;
     cursor: pointer;
-    padding: 0 4px;
+    padding: 4px;
+    transition: color 0.2s;
   }
-  .grocery-item .delete:hover { color: #e74c3c; }
+  .grocery-item .delete:active { color: #ff3b30; }
   .empty-msg {
     text-align: center;
-    color: #bbb;
+    color: var(--muted);
     font-size: 14px;
-    padding: 24px 0;
+    padding: 32px 0;
   }
-  .clear-btn {
-    background: none;
-    border: 1px solid #ddd;
-    color: #999;
-    font-size: 13px;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
+  .grocery-actions {
+    display: flex;
+    gap: 8px;
     margin-top: 8px;
   }
-  .clear-btn:active { background: #f5f5f5; }
+  .btn-ghost {
+    background: none;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ghost:active { background: var(--border); }
+
+  .install-banner {
+    display: none;
+    background: var(--primary);
+    color: #fff;
+    padding: 12px 16px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  }
+  .install-banner span { text-decoration: underline; }
 </style>
 </head>
 <body>
-  <h1>Meal Planner</h1>
-  <p class="subtitle" id="range-label"></p>
-  <div id="days-container"></div>
 
-  <h2 class="section-title">Grocery List</h2>
-  <div class="grocery-input-wrap">
-    <input class="grocery-input" id="grocery-input" placeholder="Add item..." autocomplete="off">
-    <button class="btn" id="add-btn">Add</button>
+<div class="header">
+  <div class="header-top">
+    <h1>🍽 <span>Meal</span> Planner</h1>
   </div>
-  <ul class="grocery-list" id="grocery-list"></ul>
-  <button class="clear-btn" id="clear-checked">Clear checked</button>
+  <div class="subtitle" id="range-label"></div>
+</div>
+
+<div class="days-wrap">
+  <div class="days-scroll" id="day-tabs"></div>
+</div>
+
+<div id="content">
+  <div id="day-cards"></div>
+
+  <div class="grocery-section">
+    <h2>🛒 Grocery List</h2>
+    <div class="grocery-input-wrap">
+      <input class="grocery-input" id="grocery-input" placeholder="Add item..." autocomplete="off">
+      <button class="btn" id="add-btn">Add</button>
+    </div>
+    <ul class="grocery-list" id="grocery-list"></ul>
+    <div class="grocery-actions">
+      <button class="btn-ghost" id="clear-checked">Clear checked</button>
+    </div>
+  </div>
+</div>
+
+<div class="install-banner" id="install-banner">
+  📲 Install <span>Meal Planner</span> for offline use
+</div>
 
 <script>
-  const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const DAYS_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const DAYS_LONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const MEALS = ['breakfast','lunch','dinner'];
-  const LABELS = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner' };
-  const STORAGE_KEY = 'mealplanner';
+  const MEAL_META = {
+    breakfast: { icon: '🌅', label: 'Breakfast' },
+    lunch: { icon: '☀️', label: 'Lunch' },
+    dinner: { icon: '🌙', label: 'Dinner' }
+  };
+  const STORAGE_KEY = 'mealplanner-v2';
 
   let state = loadState();
+  let activeDay = 0;
 
-  function todayStr() {
-    const d = new Date();
-    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-  }
-
-  function formatDate(date) {
-    const d = new Date(date);
-    return DAYS[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate();
+  function formatDate(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    return {
+      short: DAYS_SHORT[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate(),
+      long: DAYS_LONG[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate(),
+      day: DAYS_SHORT[d.getDay()],
+      num: d.getDate()
+    };
   }
 
   function getDates() {
@@ -176,6 +373,11 @@
       dates.push(d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'));
     }
     return dates;
+  }
+
+  function todayStr() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
   }
 
   function loadState() {
@@ -204,45 +406,67 @@
   }
 
   function render() {
-    const container = document.getElementById('days-container');
     const dates = getDates();
     const today = todayStr();
-    let first = formatDate(dates[0]);
-    let last = formatDate(dates[7]);
-    document.getElementById('range-label').textContent = first + ' — ' + last;
 
-    container.innerHTML = '';
-    dates.forEach(date => {
-      const card = document.createElement('div');
-      card.className = 'day-card';
-      if (date === today) card.classList.add('today');
-      if (date < today) card.classList.add('past');
+    document.getElementById('range-label').textContent =
+      formatDate(dates[0]).short + ' — ' + formatDate(dates[7]).short;
 
+    const tabs = document.getElementById('day-tabs');
+    tabs.innerHTML = '';
+    dates.forEach((date, i) => {
       const fmt = formatDate(date);
       const isToday = date === today;
+      const btn = document.createElement('button');
+      btn.className = 'day-tab' + (i === activeDay ? ' active' : '') + (isToday ? ' today' : '');
+      btn.textContent = isToday ? 'Today' : fmt.day + ' ' + fmt.num;
+      btn.onclick = () => switchDay(i);
+      tabs.appendChild(btn);
+    });
+
+    const cards = document.getElementById('day-cards');
+    cards.innerHTML = '';
+    dates.forEach((date, i) => {
+      const fmt = formatDate(date);
+      const isToday = date === today;
+      const card = document.createElement('div');
+      card.className = 'day-card' + (i === activeDay ? ' active' : '');
+      card.id = 'card-' + i;
 
       let mealsHtml = '';
       MEALS.forEach(meal => {
-        mealsHtml += '<div class="meal-row"><div class="meal-label">' + LABELS[meal] + '</div><textarea class="meal-input" data-date="' + date + '" data-meal="' + meal + '" placeholder="' + (isToday ? 'e.g., oatmeal' : '') + '" oninput="setMeal(\'' + date + '\',\'' + meal + '\',this.value)">' + getMeal(date, meal) + '</textarea></div>';
+        mealsHtml += '<div class="meal-card"><div class="meal-header"><div class="meal-icon ' + meal + '">' + MEAL_META[meal].icon + '</div><div class="meal-label">' + MEAL_META[meal].label + '</div></div><textarea class="meal-input" placeholder="What\'s for ' + MEAL_META[meal].label.toLowerCase() + '?" oninput="setMeal(\'' + date + '\',\'' + meal + '\',this.value)">' + getMeal(date, meal) + '</textarea></div>';
       });
 
-      card.innerHTML = '<div class="day-header">' + (isToday ? 'Today — ' : '') + fmt + '</div>' + mealsHtml;
-      container.appendChild(card);
+      card.innerHTML = '<div class="day-title">' + fmt.long + (isToday ? ' <span class="badge">Today</span>' : '') + '</div>' + mealsHtml;
+      cards.appendChild(card);
     });
+
+    tabs.scrollLeft = tabs.scrollWidth;
+  }
+
+  function switchDay(i) {
+    activeDay = i;
+    const dates = getDates();
+    document.querySelectorAll('.day-tab').forEach((t, idx) => t.classList.toggle('active', idx === i));
+    document.querySelectorAll('.day-card').forEach((c, idx) => c.classList.toggle('active', idx === i));
+
+    const tab = document.querySelectorAll('.day-tab')[i];
+    if (tab) tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
   }
 
   function renderGrocery() {
     const list = document.getElementById('grocery-list');
     const items = state.grocery || [];
     if (items.length === 0) {
-      list.innerHTML = '<li class="empty-msg">Nothing yet. Add items above.</li>';
+      list.innerHTML = '<li class="empty-msg">Your grocery list is empty</li>';
       return;
     }
     list.innerHTML = '';
     items.forEach((item, i) => {
       const li = document.createElement('li');
       li.className = 'grocery-item' + (item.checked ? ' checked' : '');
-      li.innerHTML = '<input type="checkbox" ' + (item.checked ? 'checked' : '') + ' onchange="toggleGrocery(' + i + ')"><label onclick="this.previousElementSibling.click()">' + escapeHtml(item.text) + '</label><button class="delete" onclick="deleteGrocery(' + i + ')">✕</button>';
+      li.innerHTML = '<div class="checkbox-wrap' + (item.checked ? ' checked' : '') + '" onclick="toggleGrocery(' + i + ')"></div><label onclick="toggleGrocery(' + i + ')">' + escapeHtml(item.text) + '</label><button class="delete" onclick="deleteGrocery(' + i + ')">✕</button>';
       list.appendChild(li);
     });
   }
@@ -262,10 +486,12 @@
     saveState();
     input.value = '';
     renderGrocery();
+    input.focus();
   }
 
   function toggleGrocery(i) {
-    if (state.grocery[i]) state.grocery[i].checked = !state.grocery[i].checked;
+    if (!state.grocery[i]) return;
+    state.grocery[i].checked = !state.grocery[i].checked;
     saveState();
     renderGrocery();
   }
@@ -286,6 +512,30 @@
 
   render();
   renderGrocery();
+
+  // PWA install
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('install-banner').style.display = 'block';
+  });
+
+  document.getElementById('install-banner').addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const result = await deferredPrompt.userChoice;
+      if (result.outcome === 'accepted') {
+        document.getElementById('install-banner').style.display = 'none';
+      }
+      deferredPrompt = null;
+    }
+  });
+
+  // Register service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
 </script>
 </body>
 </html>
