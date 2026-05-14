@@ -49,11 +49,7 @@
     gap: 6px;
   }
   .header h1 span { color: var(--primary); }
-  .header .subtitle {
-    font-size: 14px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
+  .header .subtitle { font-size: 14px; color: var(--muted); margin-top: 2px; }
 
   .section {
     background: var(--card);
@@ -75,11 +71,7 @@
     align-items: center;
     gap: 8px;
   }
-  .section-title .count {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--muted);
-  }
+  .section-title .count { font-size: 13px; font-weight: 500; color: var(--muted); }
 
   .input-row {
     display: flex;
@@ -112,10 +104,11 @@
     transition: opacity 0.15s;
   }
   .btn:active { opacity: 0.7; }
-  .btn-sm {
-    padding: 6px 12px;
-    font-size: 13px;
-    border-radius: 8px;
+  .btn-sm { padding: 6px 12px; font-size: 13px; border-radius: 8px; font-weight: 500; }
+  .btn-tiny {
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 6px;
     font-weight: 500;
   }
 
@@ -130,16 +123,26 @@
   }
   .item:last-child { border-bottom: none; }
   @keyframes slideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(20px); } }
+  .item.removing { animation: fadeOut 0.2s ease forwards; }
 
-  .item .emoji { font-size: 18px; flex-shrink: 0; }
+  .item .emoji { font-size: 18px; flex-shrink: 0; cursor: pointer; }
   .item label {
     flex: 1;
     font-size: 15px;
     cursor: pointer;
     word-break: break-word;
   }
-  .item.checked label { text-decoration: line-through; color: var(--muted); }
-
+  .item .del {
+    background: none;
+    border: none;
+    color: #c7c7cc;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+  .item .del:active { color: var(--red); }
   .check {
     width: 22px; height: 22px;
     border: 2px solid var(--border);
@@ -153,17 +156,7 @@
   }
   .check.checked { background: var(--green); border-color: var(--green); }
   .check.checked::after { content: '✓'; color: #fff; font-size: 13px; font-weight: 700; }
-
-  .item .del {
-    background: none;
-    border: none;
-    color: #c7c7cc;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 4px;
-    transition: color 0.2s;
-  }
-  .item .del:active { color: var(--red); }
+  .item.checked label { text-decoration: line-through; color: var(--muted); }
 
   .empty {
     text-align: center;
@@ -174,25 +167,21 @@
   }
   .empty .hint { font-size: 28px; display: block; margin-bottom: 6px; }
 
-  .plan-wrap {
-    overflow-x: auto;
-    margin: -4px -4px 0;
-    padding: 4px 4px 0;
-  }
+  .plan-wrap { overflow-x: auto; }
   .plan-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 340px;
+    min-width: 420px;
   }
   .plan-table th {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--muted);
     padding: 6px 4px 10px;
     text-align: left;
     white-space: nowrap;
   }
-  .plan-table th:first-child { width: 56px; }
+  .plan-table th:first-child { width: 52px; }
   .plan-table td {
     padding: 4px 4px 8px;
     vertical-align: top;
@@ -206,6 +195,7 @@
   }
   .plan-table tr.today td:first-child { color: var(--primary); }
 
+  .meal-cell { position: relative; }
   .meal-input {
     width: 100%;
     padding: 8px 10px;
@@ -216,11 +206,51 @@
     background: var(--bg);
     transition: border-color 0.2s, background 0.2s;
     min-width: 80px;
+    cursor: text;
   }
   .meal-input:focus { outline: none; border-color: var(--primary); background: var(--card); }
   .meal-input::placeholder { color: #d1d1d6; font-size: 12px; }
 
-  .actions { display: flex; gap: 8px; margin-top: 12px; }
+  .ing-panel {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 6px;
+    display: none;
+  }
+  .ing-panel.open { display: block; }
+  .ing-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .ing-row:last-of-type { border-bottom: none; }
+  .ing-row .del-ing {
+    background: none;
+    border: none;
+    color: #c7c7cc;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 2px;
+  }
+  .ing-row .del-ing:active { color: var(--red); }
+  .ing-add-row { display: flex; gap: 6px; margin-top: 6px; }
+  .ing-add-row input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--card);
+  }
+  .ing-add-row input:focus { outline: none; border-color: var(--primary); }
+
+  .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
   .btn-ghost {
     background: none;
     border: 1.5px solid var(--border);
@@ -254,7 +284,7 @@
   @media (max-width: 420px) {
     .meal-input { padding: 7px 8px; font-size: 13px; }
     .plan-table td:first-child { font-size: 12px; }
-    .plan-table th { font-size: 12px; }
+    .plan-table th { font-size: 11px; }
   }
 </style>
 </head>
@@ -284,7 +314,7 @@
   <div class="plan-wrap">
     <table class="plan-table">
       <thead>
-        <tr><th></th><th>🌅 Breakfast</th><th>☀️ Lunch</th><th>🌙 Dinner</th></tr>
+        <tr><th></th><th>🌅 Breakfast</th><th>☀️ Lunch</th><th>🍿 Snacks</th><th>🌙 Dinner</th></tr>
       </thead>
       <tbody id="plan-body"></tbody>
     </table>
@@ -313,11 +343,11 @@
 <script>
   const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const MEALS = ['breakfast','lunch','dinner'];
-  const KEY = 'mealplanner-v3';
+  const MEALS = ['breakfast','lunch','snacks','dinner'];
+  const KEY = 'mealplanner-v4';
 
   let state = load();
-  let addingForDay = null;
+  let expanded = null;
 
   function todayStr() {
     const d = new Date();
@@ -333,11 +363,6 @@
       dates.push(d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'));
     }
     return dates;
-  }
-
-  function fmt(d) {
-    const date = new Date(d + 'T12:00:00');
-    return DAYS[date.getDay()] + ', ' + MONTHS[date.getMonth()] + ' ' + date.getDate();
   }
 
   function fmtShort(d) {
@@ -369,24 +394,21 @@
     const input = document.getElementById('fridge-input');
     const text = input.value.trim();
     if (!text) return;
-    state.fridge.push({ text, checked: false, emoji: randomEmoji() });
+    state.fridge.push({ text, emoji: randomEmoji() });
     save();
     input.value = '';
     renderFridge();
     input.focus();
   }
 
-  function toggleFridge(i) {
-    if (!state.fridge[i]) return;
-    state.fridge[i].checked = !state.fridge[i].checked;
-    save();
-    renderFridge();
-  }
-
-  function deleteFridge(i) {
-    state.fridge.splice(i, 1);
-    save();
-    renderFridge();
+  function removeFridge(i) {
+    const items = document.querySelectorAll('#fridge-list .item');
+    if (items[i]) items[i].classList.add('removing');
+    setTimeout(() => {
+      state.fridge.splice(i, 1);
+      save();
+      renderFridge();
+    }, 200);
   }
 
   function renderFridge() {
@@ -400,8 +422,8 @@
     list.innerHTML = '';
     items.forEach((item, i) => {
       const li = document.createElement('li');
-      li.className = 'item' + (item.checked ? ' checked' : '');
-      li.innerHTML = '<span class="emoji">' + (item.emoji || '🥘') + '</span><div class="check' + (item.checked ? ' checked' : '') + '" onclick="toggleFridge(' + i + ')"></div><label onclick="toggleFridge(' + i + ')">' + esc(item.text) + '</label><button class="del" onclick="deleteFridge(' + i + ')">✕</button>';
+      li.className = 'item';
+      li.innerHTML = '<span class="emoji" onclick="removeFridge(' + i + ')">' + (item.emoji || '🥘') + '</span><label onclick="removeFridge(' + i + ')">' + esc(item.text) + '</label><button class="del" onclick="removeFridge(' + i + ')">✕</button>';
       list.appendChild(li);
     });
   }
@@ -447,34 +469,106 @@
     });
   }
 
-  function setMeal(date, meal, val) {
+  function getVal(date, meal) {
+    const m = state.meals[date] && state.meals[date][meal];
+    return (m && m.value) || '';
+  }
+  function getIngs(date, meal) {
+    const m = state.meals[date] && state.meals[date][meal];
+    return (m && m.ingredients) || [];
+  }
+  function setVal(date, meal, val) {
     if (!state.meals[date]) state.meals[date] = {};
-    state.meals[date][meal] = val;
+    if (!state.meals[date][meal]) state.meals[date][meal] = { value: '', ingredients: [] };
+    state.meals[date][meal].value = val;
     save();
   }
 
-  function getMeal(date, meal) {
-    return (state.meals[date] && state.meals[date][meal]) || '';
+  function onMealClick(date, meal) {
+    const key = date + '-' + meal;
+    if (expanded === key) return;
+    if (expanded) {
+      const prev = document.getElementById('ing-panel-' + expanded);
+      if (prev) prev.classList.remove('open');
+    }
+    expanded = key;
+    const panel = document.getElementById('ing-panel-' + key);
+    if (!panel) return;
+    panel.classList.add('open');
+    refreshIngs(date, meal);
+    const inp = document.getElementById('ing-input-' + key);
+    if (inp) setTimeout(() => inp.focus(), 50);
+  }
+
+  function collapseIngs() {
+    if (expanded) {
+      const prev = document.getElementById('ing-panel-' + expanded);
+      if (prev) prev.classList.remove('open');
+      expanded = null;
+    }
+  }
+
+  function addIng(date, meal) {
+    const key = date + '-' + meal;
+    const input = document.getElementById('ing-input-' + key);
+    if (!input) return;
+    const text = input.value.trim();
+    if (!text) return;
+    if (!state.meals[date]) state.meals[date] = {};
+    if (!state.meals[date][meal]) state.meals[date][meal] = { value: '', ingredients: [] };
+    state.meals[date][meal].ingredients.push({ text, emoji: randomEmoji() });
+    save();
+    input.value = '';
+    refreshIngs(date, meal);
+    input.focus();
+  }
+
+  function removeIng(date, meal, idx) {
+    const m = state.meals[date] && state.meals[date][meal];
+    if (!m) return;
+    m.ingredients.splice(idx, 1);
+    save();
+    refreshIngs(date, meal);
+  }
+
+  function refreshIngs(date, meal) {
+    const key = date + '-' + meal;
+    const panel = document.getElementById('ing-panel-' + key);
+    if (!panel) return;
+    const ings = getIngs(date, meal);
+    let html = '';
+    ings.forEach((ing, i) => {
+      html += '<div class="ing-row"><span>' + (ing.emoji || '🥘') + ' ' + esc(ing.text) + '</span><button class="del-ing" onclick="removeIng(\'' + date + '\',\'' + meal + '\',' + i + ')">✕</button></div>';
+    });
+    html += '<div class="ing-add-row"><input id="ing-input-' + key + '" placeholder="Add ingredient..." autocomplete="off"><button class="btn btn-tiny" onclick="addIng(\'' + date + '\',\'' + meal + '\')">+</button></div>';
+    panel.innerHTML = html;
+    const inp = document.getElementById('ing-input-' + key);
+    if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') addIng(date, meal); });
   }
 
   function renderPlan() {
     const dates = getDates();
     const today = todayStr();
-    document.getElementById('range-label').textContent = fmt(dates[0]) + ' — ' + fmt(dates[7]);
+    document.getElementById('range-label').textContent = fmtShort(dates[0]) + ' — ' + fmtShort(dates[7]);
 
     const tbody = document.getElementById('plan-body');
     tbody.innerHTML = '';
     dates.forEach(date => {
       const tr = document.createElement('tr');
       tr.className = date === today ? 'today' : '';
-      const isToday = date === today;
       let cells = '<td>' + fmtShort(date) + '</td>';
       MEALS.forEach(meal => {
-        cells += '<td><input class="meal-input" value="' + esc(getMeal(date, meal)) + '" placeholder="..." oninput="setMeal(\'' + date + '\',\'' + meal + '\',this.value)"></td>';
+        const key = date + '-' + meal;
+        const val = getVal(date, meal);
+        const isExpanded = expanded === key;
+        cells += '<td class="meal-cell"><input class="meal-input" value="' + esc(val) + '" placeholder="..." onclick="onMealClick(\'' + date + '\',\'' + meal + '\')" oninput="setVal(\'' + date + '\',\'' + meal + '\',this.value)"><div class="ing-panel' + (isExpanded ? ' open' : '') + '" id="ing-panel-' + key + '"></div></td>';
       });
       tr.innerHTML = cells;
       tbody.appendChild(tr);
     });
+    if (expanded) {
+      refreshIngs(expanded.split('-')[0], expanded.split('-')[1]);
+    }
   }
 
   document.getElementById('fridge-add').addEventListener('click', addFridge);
