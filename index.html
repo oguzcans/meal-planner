@@ -157,10 +157,10 @@
 
   .star-btn {
     background: none; border: none; font-size: 16px; cursor: pointer; padding: 2px;
-    flex-shrink: 0; opacity: 0.2; transition: opacity 0.2s, transform 0.15s; line-height: 1;
+    flex-shrink: 0; opacity: 0.35; transition: opacity 0.2s, transform 0.15s, color 0.2s; line-height: 1;
   }
-  .star-btn.show { opacity: 1; color: var(--yellow); }
-  .star-btn.show:active { transform: scale(1.3); }
+  .star-btn.faved { opacity: 1; color: var(--yellow); }
+  .star-btn:active { transform: scale(1.3); }
 
   .ing-panel {
     background: var(--bg); border-radius: 8px; padding: 10px; margin-top: 6px; display: none;
@@ -511,6 +511,12 @@
     const m = state().meals[date] && state().meals[date][meal];
     return (m && m.ingredients) || [];
   }
+  function isFav(date, meal) {
+    const val = getVal(date, meal);
+    if (!val) return false;
+    return state().favorites.some(f => f.name.toLowerCase() === val.toLowerCase() && f.meal === meal);
+  }
+
   function setVal(date, meal, val) {
     if (!state().meals[date]) state().meals[date] = {};
     if (!state().meals[date][meal]) state().meals[date][meal] = { value: '', ingredients: [] };
@@ -519,7 +525,7 @@
   }
   function updateStar(date, meal) {
     const s = document.getElementById('star-' + date + '-' + meal);
-    if (s) s.classList.toggle('show', getVal(date, meal).length > 0);
+    if (s) s.classList.toggle('faved', isFav(date, meal));
   }
 
   function saveAsFav(date, meal) {
@@ -637,7 +643,7 @@
   function makeMealCell(date, meal, isExpanded) {
     const val = getVal(date, meal);
     const key = date + '-' + meal;
-    return '<td class="meal-cell"><div class="meal-input-wrap"><input class="meal-input" value="' + esc(val) + '" placeholder="..." onclick="onMealClick(\'' + date + '\',\'' + meal + '\')" oninput="setVal(\'' + date + '\',\'' + meal + '\',this.value)"><button class="star-btn' + (val ? ' show' : '') + '" id="star-' + key + '" onclick="event.stopPropagation();saveAsFav(\'' + date + '\',\'' + meal + '\')">★</button></div><div class="ing-panel' + (isExpanded ? ' open' : '') + '" id="ing-panel-' + key + '"></div></td>';
+    return '<td class="meal-cell"><div class="meal-input-wrap"><input class="meal-input" value="' + esc(val) + '" placeholder="..." onclick="onMealClick(\'' + date + '\',\'' + meal + '\')" oninput="setVal(\'' + date + '\',\'' + meal + '\',this.value)"><button class="star-btn' + (isFav(date, meal) ? ' faved' : '') + '" id="star-' + key + '" onclick="event.stopPropagation();saveAsFav(\'' + date + '\',\'' + meal + '\')">★</button></div><div class="ing-panel' + (isExpanded ? ' open' : '') + '" id="ing-panel-' + key + '"></div></td>';
   }
 
   function renderPlanBody() {
