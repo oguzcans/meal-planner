@@ -19,6 +19,7 @@
     --primary-light: #fceae4;
     --green: #34c759;
     --red: #ff3b30;
+    --yellow: #ffcc02;
     --shadow: 0 1px 4px rgba(0,0,0,0.06);
     --radius: 14px;
     --font: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -72,6 +73,7 @@
     gap: 8px;
   }
   .section-title .count { font-size: 13px; font-weight: 500; color: var(--muted); }
+  .section-hint { font-size: 13px; color: var(--muted); margin-top: -8px; margin-bottom: 12px; }
 
   .input-row {
     display: flex;
@@ -104,13 +106,7 @@
     transition: opacity 0.15s;
   }
   .btn:active { opacity: 0.7; }
-  .btn-sm { padding: 6px 12px; font-size: 13px; border-radius: 8px; font-weight: 500; }
-  .btn-tiny {
-    padding: 4px 10px;
-    font-size: 12px;
-    border-radius: 6px;
-    font-weight: 500;
-  }
+  .btn-tiny { padding: 4px 10px; font-size: 12px; border-radius: 6px; font-weight: 500; }
 
   .item-list { list-style: none; }
   .item {
@@ -143,6 +139,7 @@
     transition: color 0.2s;
   }
   .item .del:active { color: var(--red); }
+
   .check {
     width: 22px; height: 22px;
     border: 2px solid var(--border);
@@ -194,10 +191,13 @@
     color: var(--text);
   }
   .plan-table tr.today td:first-child { color: var(--primary); }
+  .plan-table tr.past td:first-child { color: var(--muted); }
+  .plan-table tr.past .meal-input { opacity: 0.65; }
 
   .meal-cell { position: relative; }
+  .meal-input-wrap { position: relative; display: flex; align-items: center; gap: 4px; }
   .meal-input {
-    width: 100%;
+    flex: 1;
     padding: 8px 10px;
     border: 1.5px solid var(--border);
     border-radius: 8px;
@@ -205,11 +205,25 @@
     font-family: inherit;
     background: var(--bg);
     transition: border-color 0.2s, background 0.2s;
-    min-width: 80px;
+    min-width: 60px;
     cursor: text;
   }
   .meal-input:focus { outline: none; border-color: var(--primary); background: var(--card); }
   .meal-input::placeholder { color: #d1d1d6; font-size: 12px; }
+
+  .star-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 2px;
+    flex-shrink: 0;
+    opacity: 0.3;
+    transition: opacity 0.2s, transform 0.15s;
+    line-height: 1;
+  }
+  .star-btn.show { opacity: 0.6; }
+  .star-btn.show:active { opacity: 1; transform: scale(1.2); }
 
   .ing-panel {
     background: var(--bg);
@@ -219,6 +233,13 @@
     display: none;
   }
   .ing-panel.open { display: block; }
+  .ing-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .ing-panel-header .label { font-size: 12px; font-weight: 600; color: var(--muted); }
   .ing-row {
     display: flex;
     align-items: center;
@@ -250,6 +271,49 @@
   }
   .ing-add-row input:focus { outline: none; border-color: var(--primary); }
 
+  .fav-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .fav-scroll::-webkit-scrollbar { display: none; }
+  .fav-chip {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    background: var(--primary-light);
+    color: var(--primary);
+    cursor: pointer;
+    border: none;
+    white-space: nowrap;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .fav-chip:active { background: #f5d5c8; }
+  .fav-chip .ing-count {
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+  .fav-chip .del-fav {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0 0 0 4px;
+    opacity: 0.5;
+  }
+  .fav-chip .del-fav:active { opacity: 1; }
+
   .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
   .btn-ghost {
     background: none;
@@ -263,6 +327,25 @@
     transition: all 0.15s;
   }
   .btn-ghost:active { background: var(--border); }
+
+  .toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; }
 
   .install-banner {
     display: none;
@@ -321,6 +404,16 @@
   </div>
 </div>
 
+<div class="section" id="fav-section">
+  <div class="section-header">
+    <div class="section-title">⭐ Favorites</div>
+    <span class="count" id="fav-count"></span>
+  </div>
+  <div class="section-hint">Tap a favorite to fill the active meal</div>
+  <div class="fav-scroll" id="fav-scroll"></div>
+  <div class="empty" id="fav-empty" style="display:none"><span class="hint">⭐</span>Save meals you love by tapping ☆ on any meal</div>
+</div>
+
 <div class="section">
   <div class="section-header">
     <div class="section-title">🛒 Grocery List</div>
@@ -336,6 +429,7 @@
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
 <div class="install-banner" id="install-banner">
   📲 Install <strong>Meal Planner</strong> for offline use
 </div>
@@ -344,10 +438,11 @@
   const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const MEALS = ['breakfast','lunch','snacks','dinner'];
-  const KEY = 'mealplanner-v4';
+  const KEY = 'mealplanner-v5';
 
   let state = load();
   let expanded = null;
+  let lastActive = null;
 
   function todayStr() {
     const d = new Date();
@@ -357,7 +452,7 @@
   function getDates() {
     const dates = [];
     const today = new Date();
-    for (let i = 0; i < 8; i++) {
+    for (let i = -2; i < 6; i++) {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
       dates.push(d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'));
@@ -378,12 +473,20 @@
         if (p && typeof p === 'object') return p;
       }
     } catch (e) {}
-    return { meals: {}, fridge: [], grocery: [] };
+    return { meals: {}, fridge: [], grocery: [], favorites: [] };
   }
 
   function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
 
   function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2000);
+  }
 
   function randomEmoji() {
     const e = ['🥩','🥦','🧀','🥕','🍅','🥬','🍗','🥚','🧈','🥛','🍞','🍎','🍌','🥝','🍊','🧅','🥔','🌽','🍄','🥜','🧂','🫐','🍓','🥒','🧁','🥐','🧇','🥓','🍳','🌯'];
@@ -473,18 +576,79 @@
     const m = state.meals[date] && state.meals[date][meal];
     return (m && m.value) || '';
   }
+
   function getIngs(date, meal) {
     const m = state.meals[date] && state.meals[date][meal];
     return (m && m.ingredients) || [];
   }
+
   function setVal(date, meal, val) {
     if (!state.meals[date]) state.meals[date] = {};
     if (!state.meals[date][meal]) state.meals[date][meal] = { value: '', ingredients: [] };
     state.meals[date][meal].value = val;
     save();
+    updateStar(date, meal);
+  }
+
+  function updateStar(date, meal) {
+    const s = document.getElementById('star-' + date + '-' + meal);
+    if (s) s.classList.toggle('show', getVal(date, meal).length > 0);
+  }
+
+  function saveAsFav(date, meal) {
+    const val = getVal(date, meal);
+    if (!val) { toast('Write a meal name first'); return; }
+    const ings = getIngs(date, meal);
+    if (state.favorites.some(f => f.name.toLowerCase() === val.toLowerCase())) {
+      toast('Already saved');
+      return;
+    }
+    state.favorites.push({ name: val, ingredients: ings.map(i => ({ ...i })) });
+    save();
+    renderFavorites();
+    toast('⭐ Saved "' + val + '"');
+  }
+
+  function applyFav(fav) {
+    if (!lastActive) { toast('Tap a meal cell first, then tap favorite'); return; }
+    const [date, meal] = lastActive.split('-');
+    if (!state.meals[date]) state.meals[date] = {};
+    state.meals[date][meal] = { value: fav.name, ingredients: fav.ingredients.map(i => ({ ...i })) };
+    save();
+    renderPlan();
+    if (expanded === lastActive) refreshIngs(date, meal);
+    toast('✓ Filled with "' + fav.name + '"');
+  }
+
+  function deleteFav(i) {
+    state.favorites.splice(i, 1);
+    save();
+    renderFavorites();
+  }
+
+  function renderFavorites() {
+    const scroll = document.getElementById('fav-scroll');
+    const empty = document.getElementById('fav-empty');
+    const favs = state.favorites || [];
+    document.getElementById('fav-count').textContent = favs.length ? favs.length + ' saved' : '';
+    if (!favs.length) {
+      scroll.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+    scroll.innerHTML = '';
+    favs.forEach((fav, i) => {
+      const chip = document.createElement('button');
+      chip.className = 'fav-chip';
+      chip.innerHTML = esc(fav.name) + ' <span class="ing-count">' + (fav.ingredients ? fav.ingredients.length : 0) + ' ing</span><span class="del-fav" onclick="event.stopPropagation();deleteFav(' + i + ')">✕</span>';
+      chip.onclick = () => applyFav(fav);
+      scroll.appendChild(chip);
+    });
   }
 
   function onMealClick(date, meal) {
+    lastActive = date + '-' + meal;
     const key = date + '-' + meal;
     if (expanded === key) return;
     if (expanded) {
@@ -536,7 +700,7 @@
     const panel = document.getElementById('ing-panel-' + key);
     if (!panel) return;
     const ings = getIngs(date, meal);
-    let html = '';
+    let html = '<div class="ing-panel-header"><span class="label">INGREDIENTS</span><button class="btn btn-tiny" onclick="saveAsFav(\'' + date + '\',\'' + meal + '\')">☆ Save</button></div>';
     ings.forEach((ing, i) => {
       html += '<div class="ing-row"><span>' + (ing.emoji || '🥘') + ' ' + esc(ing.text) + '</span><button class="del-ing" onclick="removeIng(\'' + date + '\',\'' + meal + '\',' + i + ')">✕</button></div>';
     });
@@ -555,19 +719,21 @@
     tbody.innerHTML = '';
     dates.forEach(date => {
       const tr = document.createElement('tr');
-      tr.className = date === today ? 'today' : '';
+      const cls = date === today ? 'today' : date < today ? 'past' : '';
+      if (cls) tr.className = cls;
       let cells = '<td>' + fmtShort(date) + '</td>';
       MEALS.forEach(meal => {
         const key = date + '-' + meal;
         const val = getVal(date, meal);
         const isExpanded = expanded === key;
-        cells += '<td class="meal-cell"><input class="meal-input" value="' + esc(val) + '" placeholder="..." onclick="onMealClick(\'' + date + '\',\'' + meal + '\')" oninput="setVal(\'' + date + '\',\'' + meal + '\',this.value)"><div class="ing-panel' + (isExpanded ? ' open' : '') + '" id="ing-panel-' + key + '"></div></td>';
+        cells += '<td class="meal-cell"><div class="meal-input-wrap"><input class="meal-input" value="' + esc(val) + '" placeholder="..." onclick="onMealClick(\'' + date + '\',\'' + meal + '\')" oninput="setVal(\'' + date + '\',\'' + meal + '\',this.value)"><button class="star-btn' + (val ? ' show' : '') + '" id="star-' + key + '" onclick="event.stopPropagation();saveAsFav(\'' + date + '\',\'' + meal + '\')">☆</button></div><div class="ing-panel' + (isExpanded ? ' open' : '') + '" id="ing-panel-' + key + '"></div></td>';
       });
       tr.innerHTML = cells;
       tbody.appendChild(tr);
     });
     if (expanded) {
-      refreshIngs(expanded.split('-')[0], expanded.split('-')[1]);
+      const parts = expanded.split('-');
+      refreshIngs(parts[0], parts[1]);
     }
   }
 
@@ -584,6 +750,7 @@
   renderPlan();
   renderFridge();
   renderGrocery();
+  renderFavorites();
 
   let deferredPrompt;
   window.addEventListener('beforeinstallprompt', e => {
