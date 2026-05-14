@@ -126,8 +126,8 @@
 
   /* Mode B: meals as rows, days as columns, frozen first column */
   .mode-b { min-width: 100%; }
-  .mode-b th, .mode-b td { padding: 5px 4px; vertical-align: top; white-space: nowrap; }
-  .mode-b th { font-size: 11px; padding: 6px 4px 8px; }
+  .mode-b th, .mode-b td { padding: 8px 6px; vertical-align: middle; white-space: nowrap; }
+  .mode-b th { font-size: 11px; padding: 8px 6px 10px; }
   .mode-b th:first-child, .mode-b td:first-child {
     position: sticky; left: 0; z-index: 3;
     background: var(--sticky-bg);
@@ -135,8 +135,8 @@
     max-width: 72px;
   }
   .mode-b th:first-child { z-index: 5; }
-  .mode-b td:first-child { font-size: 12px; font-weight: 600; color: var(--text); }
-  .mode-b .meal-row-label { font-size: 12px; font-weight: 600; line-height: 1.2; }
+  .mode-b td:first-child { font-size: 12px; font-weight: 600; color: var(--text); padding-top: 12px; }
+  .mode-b .meal-row-label { font-size: 12px; font-weight: 600; line-height: 1.4; padding: 4px 0; }
   .mode-b .meal-row-label .icon { font-size: 14px; }
   .mode-b .today-highlight { color: var(--primary); }
 
@@ -153,7 +153,7 @@
   .meal-input:focus { outline: none; border-color: var(--primary); background: var(--card); }
   .meal-input::placeholder { color: #d1d1d6; font-size: 12px; }
 
-  .mode-b .meal-input { min-width: 72px; font-size: 13px; padding: 7px 8px; }
+  .mode-b .meal-input { min-width: 68px; font-size: 13px; padding: 8px 8px; }
 
   .star-btn {
     background: none; border: none; font-size: 16px; cursor: pointer; padding: 2px;
@@ -242,9 +242,10 @@
   @media (max-width: 420px) {
     .meal-input { padding: 7px 8px; font-size: 13px; }
     .mode-a th { font-size: 11px; }
-    .mode-b .meal-input { min-width: 64px; font-size: 12px; padding: 6px 6px; }
-    .mode-b th { font-size: 10px; padding: 6px 3px 8px; }
-    .mode-b th:first-child, .mode-b td:first-child { min-width: 56px; max-width: 56px; }
+    .mode-b .meal-input { min-width: 58px; font-size: 12px; padding: 7px 6px; }
+    .mode-b th { font-size: 10px; padding: 8px 4px 10px; }
+    .mode-b th:first-child, .mode-b td:first-child { min-width: 50px; max-width: 50px; }
+    .mode-b td:first-child { padding-top: 10px; }
   }
 </style>
 </head>
