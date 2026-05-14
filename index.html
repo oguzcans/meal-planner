@@ -106,7 +106,9 @@
     transition: opacity 0.15s;
   }
   .btn:active { opacity: 0.7; }
+  .btn-sm { padding: 8px 14px; font-size: 13px; border-radius: 8px; font-weight: 500; }
   .btn-tiny { padding: 4px 10px; font-size: 12px; border-radius: 6px; font-weight: 500; }
+  .btn-block { width: 100%; }
 
   .item-list { list-style: none; }
   .item {
@@ -136,7 +138,6 @@
     font-size: 16px;
     cursor: pointer;
     padding: 4px;
-    transition: color 0.2s;
   }
   .item .del:active { color: var(--red); }
 
@@ -178,24 +179,27 @@
     text-align: left;
     white-space: nowrap;
   }
-  .plan-table th:first-child { width: 52px; }
+  .plan-table th:first-child { width: 72px; }
   .plan-table td {
     padding: 4px 4px 8px;
     vertical-align: top;
   }
   .plan-table td:first-child {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     padding-top: 8px;
     white-space: nowrap;
     color: var(--text);
+    line-height: 1.3;
   }
+  .plan-table td:first-child .dow { font-size: 10px; font-weight: 400; color: var(--muted); display: block; }
   .plan-table tr.today td:first-child { color: var(--primary); }
+  .plan-table tr.today td:first-child .dow { color: var(--primary); opacity: 0.6; }
   .plan-table tr.past td:first-child { color: var(--muted); }
-  .plan-table tr.past .meal-input { opacity: 0.65; }
+  .plan-table tr.past .meal-input { opacity: 0.6; }
 
   .meal-cell { position: relative; }
-  .meal-input-wrap { position: relative; display: flex; align-items: center; gap: 4px; }
+  .meal-input-wrap { position: relative; display: flex; align-items: center; gap: 3px; }
   .meal-input {
     flex: 1;
     padding: 8px 10px;
@@ -218,12 +222,12 @@
     cursor: pointer;
     padding: 2px;
     flex-shrink: 0;
-    opacity: 0.3;
+    opacity: 0.25;
     transition: opacity 0.2s, transform 0.15s;
     line-height: 1;
   }
-  .star-btn.show { opacity: 0.6; }
-  .star-btn.show:active { opacity: 1; transform: scale(1.2); }
+  .star-btn.show { opacity: 0.7; }
+  .star-btn.show:active { opacity: 1; transform: scale(1.3); }
 
   .ing-panel {
     background: var(--bg);
@@ -237,9 +241,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    gap: 8px;
   }
   .ing-panel-header .label { font-size: 12px; font-weight: 600; color: var(--muted); }
+
   .ing-row {
     display: flex;
     align-items: center;
@@ -271,15 +277,48 @@
   }
   .ing-add-row input:focus { outline: none; border-color: var(--primary); }
 
+  .fav-picker-row {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 4px 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .fav-picker-row::-webkit-scrollbar { display: none; }
+  .fav-pick {
+    flex-shrink: 0;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .fav-pick:active { border-color: var(--primary); background: var(--primary-light); }
+  .fav-pick .sub { font-weight: 400; color: var(--muted); font-size: 11px; margin-left: 4px; }
+
+  .fav-category { margin-bottom: 14px; }
+  .fav-category:last-child { margin-bottom: 0; }
+  .fav-cat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
   .fav-scroll {
     display: flex;
     gap: 8px;
     overflow-x: auto;
-    padding: 4px 0 8px;
+    padding: 2px 0 4px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
   .fav-scroll::-webkit-scrollbar { display: none; }
+
   .fav-chip {
     flex-shrink: 0;
     display: flex;
@@ -294,25 +333,43 @@
     cursor: pointer;
     border: none;
     white-space: nowrap;
-    transition: background 0.2s;
-    position: relative;
+    transition: background 0.15s;
   }
-  .fav-chip:active { background: #f5d5c8; }
-  .fav-chip .ing-count {
-    font-size: 11px;
-    font-weight: 400;
-    opacity: 0.7;
-  }
-  .fav-chip .del-fav {
+  .fav-chip:active { background: #f0d5c8; }
+  .fav-chip .ing-c { font-size: 11px; font-weight: 400; opacity: 0.6; margin-left: 2px; }
+  .fav-chip .del-f {
     background: none;
     border: none;
     color: var(--primary);
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
     padding: 0 0 0 4px;
-    opacity: 0.5;
+    opacity: 0.4;
   }
-  .fav-chip .del-fav:active { opacity: 1; }
+  .fav-chip .del-f:active { opacity: 1; }
+
+  .cell-picker {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 8px;
+    margin-top: 8px;
+    display: none;
+  }
+  .cell-picker.open { display: block; }
+  .cell-opt {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    border: none;
+    background: none;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.1s;
+  }
+  .cell-opt:active { background: var(--border); }
+  .cell-opt .tag { font-size: 11px; color: var(--muted); }
 
   .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
   .btn-ghost {
@@ -324,7 +381,6 @@
     padding: 8px 14px;
     border-radius: 10px;
     cursor: pointer;
-    transition: all 0.15s;
   }
   .btn-ghost:active { background: var(--border); }
 
@@ -366,8 +422,9 @@
 
   @media (max-width: 420px) {
     .meal-input { padding: 7px 8px; font-size: 13px; }
-    .plan-table td:first-child { font-size: 12px; }
     .plan-table th { font-size: 11px; }
+    .plan-table td:first-child { font-size: 11px; }
+    .plan-table td:first-child .dow { font-size: 9px; }
   }
 </style>
 </head>
@@ -409,9 +466,8 @@
     <div class="section-title">⭐ Favorites</div>
     <span class="count" id="fav-count"></span>
   </div>
-  <div class="section-hint">Tap a favorite to fill the active meal</div>
-  <div class="fav-scroll" id="fav-scroll"></div>
-  <div class="empty" id="fav-empty" style="display:none"><span class="hint">⭐</span>Save meals you love by tapping ☆ on any meal</div>
+  <div class="section-hint">Tap a favorite > pick a cell to fill</div>
+  <div id="fav-content"></div>
 </div>
 
 <div class="section">
@@ -435,14 +491,16 @@
 </div>
 
 <script>
-  const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const DAYS_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const DAYS_LONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const MEALS = ['breakfast','lunch','snacks','dinner'];
-  const KEY = 'mealplanner-v5';
+  const MEAL_ICON = { breakfast:'🌅', lunch:'☀️', snacks:'🍿', dinner:'🌙' };
+  const MEAL_LABEL = { breakfast:'Breakfast', lunch:'Lunch', snacks:'Snacks', dinner:'Dinner' };
+  const KEY = 'mealplanner-v6';
 
   let state = load();
   let expanded = null;
-  let lastActive = null;
 
   function todayStr() {
     const d = new Date();
@@ -460,9 +518,14 @@
     return dates;
   }
 
+  function fmtFull(d) {
+    const date = new Date(d + 'T12:00:00');
+    return { dow: DAYS_LONG[date.getDay()], num: date.getDate(), mon: MONTHS[date.getMonth()] };
+  }
+
   function fmtShort(d) {
     const date = new Date(d + 'T12:00:00');
-    return DAYS[date.getDay()] + ' ' + date.getDate();
+    return DAYS_SHORT[date.getDay()] + ' ' + date.getDate();
   }
 
   function load() {
@@ -477,7 +540,6 @@
   }
 
   function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
-
   function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
   function toast(msg) {
@@ -485,7 +547,7 @@
     t.textContent = msg;
     t.classList.add('show');
     clearTimeout(t._timer);
-    t._timer = setTimeout(() => t.classList.remove('show'), 2000);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2200);
   }
 
   function randomEmoji() {
@@ -576,12 +638,10 @@
     const m = state.meals[date] && state.meals[date][meal];
     return (m && m.value) || '';
   }
-
   function getIngs(date, meal) {
     const m = state.meals[date] && state.meals[date][meal];
     return (m && m.ingredients) || [];
   }
-
   function setVal(date, meal, val) {
     if (!state.meals[date]) state.meals[date] = {};
     if (!state.meals[date][meal]) state.meals[date][meal] = { value: '', ingredients: [] };
@@ -589,7 +649,6 @@
     save();
     updateStar(date, meal);
   }
-
   function updateStar(date, meal) {
     const s = document.getElementById('star-' + date + '-' + meal);
     if (s) s.classList.toggle('show', getVal(date, meal).length > 0);
@@ -599,25 +658,14 @@
     const val = getVal(date, meal);
     if (!val) { toast('Write a meal name first'); return; }
     const ings = getIngs(date, meal);
-    if (state.favorites.some(f => f.name.toLowerCase() === val.toLowerCase())) {
-      toast('Already saved');
+    if (state.favorites.some(f => f.name.toLowerCase() === val.toLowerCase() && f.meal === meal)) {
+      toast('Already saved for ' + MEAL_LABEL[meal]);
       return;
     }
-    state.favorites.push({ name: val, ingredients: ings.map(i => ({ ...i })) });
+    state.favorites.push({ name: val, meal, ingredients: ings.map(i => ({ ...i })) });
     save();
     renderFavorites();
     toast('⭐ Saved "' + val + '"');
-  }
-
-  function applyFav(fav) {
-    if (!lastActive) { toast('Tap a meal cell first, then tap favorite'); return; }
-    const [date, meal] = lastActive.split('-');
-    if (!state.meals[date]) state.meals[date] = {};
-    state.meals[date][meal] = { value: fav.name, ingredients: fav.ingredients.map(i => ({ ...i })) };
-    save();
-    renderPlan();
-    if (expanded === lastActive) refreshIngs(date, meal);
-    toast('✓ Filled with "' + fav.name + '"');
   }
 
   function deleteFav(i) {
@@ -626,29 +674,58 @@
     renderFavorites();
   }
 
+  function fillCell(date, meal, fav) {
+    if (!state.meals[date]) state.meals[date] = {};
+    state.meals[date][meal] = { value: fav.name, ingredients: fav.ingredients.map(i => ({ ...i })) };
+    save();
+    renderPlan();
+    if (expanded === date + '-' + meal) refreshIngs(date, meal);
+    document.querySelectorAll('.cell-picker.open').forEach(p => p.classList.remove('open'));
+    toast('✓ Filled with "' + fav.name + '"');
+  }
+
+  function showCellPicker(fav, btnEl) {
+    document.querySelectorAll('.cell-picker.open').forEach(p => p.classList.remove('open'));
+    const dates = getDates();
+    const today = todayStr();
+    let html = '';
+    dates.forEach(d => {
+      if (d < today) return;
+      const f = fmtFull(d);
+      MEALS.forEach(meal => {
+        html += '<button class="cell-opt" onclick="fillCell(\'' + d + '\',\'' + meal + '\',' + JSON.stringify(fav).replace(/'/g,"\\'").replace(/"/g,'&quot;') + ')">' + f.dow + ' ' + f.num + ' <span class="tag">' + MEAL_ICON[meal] + ' ' + MEAL_LABEL[meal] + '</span></button>';
+      });
+    });
+
+    const picker = document.createElement('div');
+    picker.className = 'cell-picker open';
+    picker.innerHTML = html;
+    btnEl.parentNode.insertBefore(picker, btnEl.nextSibling);
+  }
+
   function renderFavorites() {
-    const scroll = document.getElementById('fav-scroll');
-    const empty = document.getElementById('fav-empty');
+    const container = document.getElementById('fav-content');
     const favs = state.favorites || [];
     document.getElementById('fav-count').textContent = favs.length ? favs.length + ' saved' : '';
     if (!favs.length) {
-      scroll.innerHTML = '';
-      empty.style.display = 'block';
+      container.innerHTML = '<div class="empty"><span class="hint">⭐</span>Save meals you love by tapping ☆ on any meal</div>';
       return;
     }
-    empty.style.display = 'none';
-    scroll.innerHTML = '';
-    favs.forEach((fav, i) => {
-      const chip = document.createElement('button');
-      chip.className = 'fav-chip';
-      chip.innerHTML = esc(fav.name) + ' <span class="ing-count">' + (fav.ingredients ? fav.ingredients.length : 0) + ' ing</span><span class="del-fav" onclick="event.stopPropagation();deleteFav(' + i + ')">✕</span>';
-      chip.onclick = () => applyFav(fav);
-      scroll.appendChild(chip);
+    let html = '';
+    MEALS.forEach(meal => {
+      const filtered = favs.filter(f => f.meal === meal);
+      if (!filtered.length) return;
+      html += '<div class="fav-category"><div class="fav-cat-label">' + MEAL_ICON[meal] + ' ' + MEAL_LABEL[meal] + '</div><div class="fav-scroll">';
+      filtered.forEach((fav, fi) => {
+        const idx = favs.indexOf(fav);
+        html += '<button class="fav-chip" onclick="showCellPicker(favorites[' + idx + '], this)">' + esc(fav.name) + ' <span class="ing-c">' + (fav.ingredients ? fav.ingredients.length : 0) + ' ing</span><span class="del-f" onclick="event.stopPropagation();deleteFav(' + idx + ')">✕</span></button>';
+      });
+      html += '</div></div>';
     });
+    container.innerHTML = html || '<div class="empty"><span class="hint">⭐</span>No favorites yet</div>';
   }
 
   function onMealClick(date, meal) {
-    lastActive = date + '-' + meal;
     const key = date + '-' + meal;
     if (expanded === key) return;
     if (expanded) {
@@ -662,14 +739,6 @@
     refreshIngs(date, meal);
     const inp = document.getElementById('ing-input-' + key);
     if (inp) setTimeout(() => inp.focus(), 50);
-  }
-
-  function collapseIngs() {
-    if (expanded) {
-      const prev = document.getElementById('ing-panel-' + expanded);
-      if (prev) prev.classList.remove('open');
-      expanded = null;
-    }
   }
 
   function addIng(date, meal) {
@@ -700,11 +769,21 @@
     const panel = document.getElementById('ing-panel-' + key);
     if (!panel) return;
     const ings = getIngs(date, meal);
-    let html = '<div class="ing-panel-header"><span class="label">INGREDIENTS</span><button class="btn btn-tiny" onclick="saveAsFav(\'' + date + '\',\'' + meal + '\')">☆ Save</button></div>';
+    const mealFavs = (state.favorites || []).filter(f => f.meal === meal);
+    let html = '<div class="ing-panel-header"><span class="label">INGREDIENTS</span></div>';
     ings.forEach((ing, i) => {
       html += '<div class="ing-row"><span>' + (ing.emoji || '🥘') + ' ' + esc(ing.text) + '</span><button class="del-ing" onclick="removeIng(\'' + date + '\',\'' + meal + '\',' + i + ')">✕</button></div>';
     });
     html += '<div class="ing-add-row"><input id="ing-input-' + key + '" placeholder="Add ingredient..." autocomplete="off"><button class="btn btn-tiny" onclick="addIng(\'' + date + '\',\'' + meal + '\')">+</button></div>';
+    if (mealFavs.length) {
+      html += '<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)"><div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px">⭐ From Favorites</div><div class="fav-picker-row">';
+      mealFavs.forEach((fav, fi) => {
+        const idx = state.favorites.indexOf(fav);
+        const encoded = 'fav' + fi + '_' + date + '_' + meal;
+        html += '<button class="fav-pick" onclick="fillCell(\'' + date + '\',\'' + meal + '\',state.favorites[' + idx + ']);document.getElementById(\'ing-panel-' + key + '\').classList.remove(\'open\');expanded=null">' + esc(fav.name) + ' <span class="sub">' + (fav.ingredients ? fav.ingredients.length : 0) + ' ing</span></button>';
+      });
+      html += '</div></div>';
+    }
     panel.innerHTML = html;
     const inp = document.getElementById('ing-input-' + key);
     if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') addIng(date, meal); });
@@ -719,9 +798,10 @@
     tbody.innerHTML = '';
     dates.forEach(date => {
       const tr = document.createElement('tr');
+      const f = fmtFull(date);
       const cls = date === today ? 'today' : date < today ? 'past' : '';
       if (cls) tr.className = cls;
-      let cells = '<td>' + fmtShort(date) + '</td>';
+      let cells = '<td><span class="dow">' + f.dow + '</span>' + f.mon + ' ' + f.num + '</td>';
       MEALS.forEach(meal => {
         const key = date + '-' + meal;
         const val = getVal(date, meal);
