@@ -126,19 +126,22 @@
 
   /* Mode B: meals as rows, days as columns, frozen first column */
   .mode-b { min-width: 100%; }
-  .mode-b th, .mode-b td { padding: 8px 6px; vertical-align: middle; white-space: nowrap; }
-  .mode-b th { font-size: 11px; padding: 8px 6px 10px; }
+  .mode-b th, .mode-b td { padding: 14px 8px; vertical-align: middle; white-space: nowrap; }
+  .mode-b th { font-size: 11px; padding: 8px 8px 12px; font-weight: 600; color: var(--muted); }
   .mode-b th:first-child, .mode-b td:first-child {
     position: sticky; left: 0; z-index: 3;
     background: var(--sticky-bg);
-    min-width: 72px;
-    max-width: 72px;
+    min-width: 80px;
+    max-width: 80px;
   }
   .mode-b th:first-child { z-index: 5; }
-  .mode-b td:first-child { font-size: 12px; font-weight: 600; color: var(--text); padding-top: 12px; }
-  .mode-b .meal-row-label { font-size: 12px; font-weight: 600; line-height: 1.4; padding: 4px 0; }
-  .mode-b .meal-row-label .icon { font-size: 14px; }
+  .mode-b td:first-child { font-size: 13px; font-weight: 600; color: var(--text); padding-top: 18px; }
+  .mode-b .meal-row-label .icon { font-size: 15px; }
   .mode-b .today-highlight { color: var(--primary); }
+  .mode-b tbody tr { border-bottom: 1px solid var(--border); }
+  .mode-b tbody tr:last-child { border-bottom: none; }
+  .mode-b tbody tr:first-child { border-top: 1px solid var(--border); }
+  .mode-b .meal-row-label { display: flex; align-items: center; gap: 6px; }
 
   .mode-b .day-col { text-align: left; }
   .mode-b .day-col .dow { font-size: 10px; font-weight: 400; color: var(--muted); display: block; }
@@ -242,10 +245,11 @@
   @media (max-width: 420px) {
     .meal-input { padding: 7px 8px; font-size: 13px; }
     .mode-a th { font-size: 11px; }
-    .mode-b .meal-input { min-width: 58px; font-size: 12px; padding: 7px 6px; }
+    .mode-b .meal-input { min-width: 52px; font-size: 12px; padding: 7px 6px; }
     .mode-b th { font-size: 10px; padding: 8px 4px 10px; }
-    .mode-b th:first-child, .mode-b td:first-child { min-width: 50px; max-width: 50px; }
-    .mode-b td:first-child { padding-top: 10px; }
+    .mode-b th:first-child, .mode-b td:first-child { min-width: 60px; max-width: 60px; }
+    .mode-b td:first-child { padding-top: 16px; font-size: 12px; }
+    .mode-b th, .mode-b td { padding: 12px 5px; }
   }
 </style>
 </head>
@@ -537,10 +541,10 @@
       toast('Already saved for ' + MEAL_LABEL[meal]); return;
     }
     state().favorites.push({ name: val, meal, ingredients: ings.map(i => ({ ...i })) });
-    save(); renderFavorites(); toast('⭐ Saved "' + val + '"');
+    save(); renderFavorites(); updateStar(date, meal); toast('⭐ Saved "' + val + '"');
   }
 
-  function deleteFav(i) { state().favorites.splice(i, 1); save(); renderFavorites(); }
+  function deleteFav(i) { state().favorites.splice(i, 1); save(); renderFavorites(); renderPlanBody(); }
 
   function fillCell(date, meal, fav) {
     if (!state().meals[date]) state().meals[date] = {};
