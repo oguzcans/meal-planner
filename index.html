@@ -125,9 +125,9 @@
   .mode-a tr.past .meal-input { opacity: 0.6; }
 
   /* Mode B: meals as rows, days as columns, frozen first column */
-  .mode-b { min-width: 100%; }
-  .mode-b th, .mode-b td { padding: 14px 8px; vertical-align: middle; white-space: nowrap; }
-  .mode-b th { font-size: 11px; padding: 8px 8px 12px; font-weight: 600; color: var(--muted); }
+  .mode-b { min-width: 100%; border-collapse: separate; border-spacing: 0 6px; }
+  .mode-b th, .mode-b td { padding: 16px 10px; vertical-align: middle; white-space: nowrap; background: var(--sticky-bg); }
+  .mode-b th { font-size: 11px; padding: 8px 10px 16px; font-weight: 600; color: var(--muted); border-radius: 0; }
   .mode-b th:first-child, .mode-b td:first-child {
     position: sticky; left: 0; z-index: 3;
     background: var(--sticky-bg);
@@ -135,14 +135,20 @@
     max-width: 80px;
   }
   .mode-b th:first-child { z-index: 5; }
-  .mode-b td:first-child { font-size: 13px; font-weight: 600; color: var(--text); padding-top: 18px; }
+  .mode-b td:first-child { font-size: 13px; font-weight: 600; color: var(--text);
+    padding-top: 20px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  .mode-b td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  .mode-b .meal-row-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
   .mode-b .meal-row-label .icon { font-size: 15px; }
   .mode-b .today-highlight { color: var(--primary); }
-  .mode-b tbody tr { border-bottom: 1px solid var(--border); }
-  .mode-b tbody tr:last-child { border-bottom: none; }
-  .mode-b tbody tr:first-child { border-top: 1px solid var(--border); }
-  .mode-b .meal-row-label { display: flex; align-items: center; gap: 6px; }
-
+  .mode-b tbody tr { box-shadow: 0 1px 3px rgba(0,0,0,0.04); border-radius: 10px; }
+  .mode-b > tbody > tr:first-child > td { padding-top: 36px !important; }
   .mode-b .day-col { text-align: left; }
   .mode-b .day-col .dow { font-size: 10px; font-weight: 400; color: var(--muted); display: block; }
 
@@ -204,6 +210,7 @@
   .fav-chip .ing-c { font-size: 11px; font-weight: 400; opacity: 0.6; }
   .fav-chip .del-f { background: none; border: none; color: var(--primary); font-size: 13px; cursor: pointer; padding: 0 0 0 4px; opacity: 0.4; }
   .fav-chip .del-f:active { opacity: 1; }
+  .fav-chip .edit-f { background: none; border: none; color: var(--muted); font-size: 12px; cursor: pointer; padding: 0 0 0 2px; opacity: 0.3; }
 
   .cell-picker { background: var(--bg); border-radius: 10px; padding: 8px; margin-top: 8px; display: none; }
   .cell-picker.open { display: block; }
@@ -211,12 +218,33 @@
   .cell-opt:active { background: var(--border); }
   .cell-opt .tag { font-size: 11px; color: var(--muted); }
 
+  .fav-dropdown {
+    background: var(--card); border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 6px; margin-top: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    min-width: 180px; z-index: 20; animation: slideIn 0.15s ease;
+  }
+  .fav-dd-label { font-size: 11px; font-weight: 600; color: var(--muted); padding: 4px 8px 6px; }
+  .fav-dd-opt {
+    display: block; width: 100%; text-align: left; padding: 8px 10px;
+    border: none; background: none; font-size: 13px; cursor: pointer; border-radius: 6px; font-family: inherit;
+  }
+  .fav-dd-opt:active { background: var(--primary-light); }
+  .fav-dd-opt .sub { font-size: 11px; color: var(--muted); font-weight: 400; }
+
   .coll-toggle {
     background: none; border: none; font-size: 15px; font-weight: 600; cursor: pointer; padding: 4px 0;
     color: var(--text); display: flex; align-items: center; gap: 6px; width: 100%; text-align: left;
   }
   .coll-toggle .arrow { transition: transform 0.2s; font-size: 12px; color: var(--muted); }
   .coll-toggle.open .arrow { transform: rotate(90deg); }
+
+  .nav-arrow {
+    background: none; border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 12px; cursor: pointer; padding: 6px 8px; line-height: 1; color: var(--text);
+    transition: background 0.15s;
+  }
+  .nav-arrow:active { background: var(--bg); }
+  .week-label { font-size: 12px; color: var(--muted); font-weight: 500; min-width: 68px; text-align: center; }
 
   .history-day { margin-bottom: 12px; }
   .history-day:last-child { margin-bottom: 0; }
@@ -246,10 +274,11 @@
     .meal-input { padding: 7px 8px; font-size: 13px; }
     .mode-a th { font-size: 11px; }
     .mode-b .meal-input { min-width: 52px; font-size: 12px; padding: 7px 6px; }
-    .mode-b th { font-size: 10px; padding: 8px 4px 10px; }
+    .mode-b th { font-size: 10px; padding: 6px 4px 10px; }
     .mode-b th:first-child, .mode-b td:first-child { min-width: 60px; max-width: 60px; }
     .mode-b td:first-child { padding-top: 16px; font-size: 12px; }
     .mode-b th, .mode-b td { padding: 12px 5px; }
+    .mode-b > tbody > tr:first-child > td { padding-top: 24px !important; }
   }
 </style>
 </head>
@@ -279,6 +308,11 @@
 <div class="section">
   <div class="section-header">
     <div class="section-title">📅 Weekly Plan</div>
+    <div style="display:flex;align-items:center;gap:4px">
+      <button class="nav-arrow" onclick="shiftWeek(-1)">◀</button>
+      <span class="week-label" id="week-label">This Week</span>
+      <button class="nav-arrow" onclick="shiftWeek(1)">▶</button>
+    </div>
     <div class="layout-toggle" id="layout-toggle"></div>
   </div>
   <div class="plan-wrap" id="plan-wrap">
@@ -309,6 +343,7 @@
   </div>
   <ul class="item-list" id="grocery-list"></ul>
   <div class="actions">
+    <button class="btn-ghost" id="generate-grocery">📋 Generate from meals</button>
     <button class="btn-ghost" id="clear-checked">Clear checked</button>
   </div>
 </div>
@@ -340,6 +375,8 @@
   let app = loadApp();
   let expanded = null;
   let layoutMode = null;
+  let weekOffset = 0;
+  let clipboard = null;
 
   function P() { return app.profiles[app.activeProfile]; }
   function state() { return P().data; }
@@ -352,12 +389,29 @@
   function getDates() {
     const dates = [];
     const today = new Date();
+    today.setDate(today.getDate() + weekOffset * 7);
     for (let i = -2; i < 6; i++) {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
       dates.push(d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'));
     }
     return dates;
+  }
+
+  function shiftWeek(delta) {
+    weekOffset += delta;
+    expanded = null;
+    closeAllFavDropdowns();
+    renderPlanBody();
+  }
+
+  function updateWeekLabel() {
+    const el = document.getElementById('week-label');
+    if (!el) return;
+    if (weekOffset === 0) el.textContent = 'This Week';
+    else if (weekOffset === -1) el.textContent = 'Last Week';
+    else if (weekOffset === 1) el.textContent = 'Next Week';
+    else el.textContent = weekOffset > 0 ? '+' + weekOffset + ' weeks' : Math.abs(weekOffset) + ' weeks ago';
   }
 
   function fmtFull(d) {
@@ -405,6 +459,8 @@
     app.activeProfile = idx;
     save();
     expanded = null;
+    weekOffset = 0;
+    clipboard = null;
     fullRender();
   }
 
@@ -494,6 +550,35 @@
 
   function deleteGrocery(i) { state().grocery.splice(i, 1); save(); renderGrocery(); }
 
+  function generateGrocery() {
+    const dates = getDates();
+    const meals = state().meals || {};
+    const fridge = state().fridge || [];
+    const grocery = state().grocery || [];
+    const fridgeTexts = fridge.map(f => f.text.toLowerCase().trim());
+    const existingTexts = grocery.map(g => g.text.toLowerCase().trim());
+    const seen = new Set();
+    let added = 0;
+    dates.forEach(date => {
+      if (!meals[date]) return;
+      MEALS.forEach(meal => {
+        const cell = meals[date][meal];
+        if (!cell || !cell.value || !cell.ingredients) return;
+        cell.ingredients.forEach(ing => {
+          const key = ing.text.toLowerCase().trim();
+          if (!key || seen.has(key)) return;
+          seen.add(key);
+          if (fridgeTexts.includes(key)) return;
+          if (existingTexts.includes(key)) return;
+          state().grocery.push({ text: ing.text, checked: false });
+          added++;
+        });
+      });
+    });
+    if (!added) { toast('No new ingredients to add (check fridge)'); return; }
+    save(); renderGrocery(); toast('✓ Added ' + added + ' items from meals');
+  }
+
   function renderGrocery() {
     const list = document.getElementById('grocery-list');
     const items = state().grocery || [];
@@ -527,6 +612,7 @@
     if (!state().meals[date][meal]) state().meals[date][meal] = { value: '', ingredients: [] };
     state().meals[date][meal].value = val;
     save(); updateStar(date, meal);
+    if (val) closeAllFavDropdowns();
   }
   function updateStar(date, meal) {
     const s = document.getElementById('star-' + date + '-' + meal);
@@ -534,6 +620,7 @@
   }
 
   function saveAsFav(date, meal) {
+    closeAllFavDropdowns();
     const val = getVal(date, meal);
     if (!val) { toast('Write a meal name first'); return; }
     const ings = getIngs(date, meal);
@@ -546,6 +633,17 @@
 
   function deleteFav(i) { state().favorites.splice(i, 1); save(); renderFavorites(); renderPlanBody(); }
 
+  function editFav(i) {
+    const fav = state().favorites[i];
+    if (!fav) return;
+    const name = prompt('Edit meal name:', fav.name);
+    if (name && name.trim() && name.trim() !== fav.name) {
+      fav.name = name.trim();
+      save(); renderFavorites(); renderPlanBody();
+      toast('✏️ Updated to "' + fav.name + '"');
+    }
+  }
+
   function fillCell(date, meal, fav) {
     if (!state().meals[date]) state().meals[date] = {};
     state().meals[date][meal] = { value: fav.name, ingredients: fav.ingredients.map(i => ({ ...i })) };
@@ -553,6 +651,23 @@
     if (expanded === date + '-' + meal) refreshIngs(date, meal);
     document.querySelectorAll('.cell-picker.open').forEach(p => p.classList.remove('open'));
     toast('✓ Filled with "' + fav.name + '"');
+  }
+
+  function copyMeal(date, meal) {
+    const val = getVal(date, meal);
+    if (!val) { toast('Write a meal name first'); return; }
+    const ings = getIngs(date, meal);
+    clipboard = { value: val, meal, ingredients: ings.map(i => ({ ...i })) };
+    toast('📋 Copied "' + val + '"');
+  }
+
+  function pasteMeal(date, meal) {
+    if (!clipboard) return;
+    if (!state().meals[date]) state().meals[date] = {};
+    state().meals[date][meal] = { value: clipboard.value, ingredients: clipboard.ingredients.map(i => ({ ...i })) };
+    save(); renderPlanBody();
+    closeAllFavDropdowns();
+    toast('📋 Pasted "' + clipboard.value + '"');
   }
 
   function showCellPicker(fav, btnEl) {
@@ -586,7 +701,7 @@
       html += '<div class="fav-category"><div class="fav-cat-label">' + MEAL_ICON[meal] + ' ' + MEAL_LABEL[meal] + '</div><div class="fav-scroll">';
       filtered.forEach(fav => {
         const idx = favs.indexOf(fav);
-        html += '<button class="fav-chip" onclick="showCellPicker(state().favorites[' + idx + '], this)">' + esc(fav.name) + ' <span class="ing-c">' + (fav.ingredients ? fav.ingredients.length : 0) + ' ing</span><span class="del-f" onclick="event.stopPropagation();deleteFav(' + idx + ')">✕</span></button>';
+        html += '<button class="fav-chip" onclick="showCellPicker(state().favorites[' + idx + '], this)">' + esc(fav.name) + ' <span class="ing-c">' + (fav.ingredients ? fav.ingredients.length : 0) + ' ing</span><span class="edit-f" onclick="event.stopPropagation();editFav(' + idx + ')">✏️</span><span class="del-f" onclick="event.stopPropagation();deleteFav(' + idx + ')">✕</span></button>';
       });
       html += '</div></div>';
     });
@@ -595,12 +710,47 @@
 
   function onMealClick(date, meal) {
     const key = date + '-' + meal;
+    const val = getVal(date, meal);
+
+    if (!val) {
+      closeAllFavDropdowns();
+      showFavDropdown(date, meal);
+      return;
+    }
+
     if (expanded === key) return;
     if (expanded) { const prev = document.getElementById('ing-panel-' + expanded); if (prev) prev.classList.remove('open'); }
     expanded = key;
     const panel = document.getElementById('ing-panel-' + key);
     if (!panel) return;
     panel.classList.add('open'); refreshIngs(date, meal);
+  }
+
+  function closeAllFavDropdowns() {
+    document.querySelectorAll('.fav-dropdown').forEach(el => el.remove());
+  }
+
+  function showFavDropdown(date, meal) {
+    const key = date + '-' + meal;
+    const favs = (state().favorites || []).filter(f => f.meal === meal);
+    if (!favs.length && !clipboard) return;
+    const cell = document.getElementById('star-' + key)?.closest('.meal-cell');
+    if (!cell) return;
+    const dd = document.createElement('div');
+    dd.className = 'fav-dropdown';
+    let html = '';
+    if (clipboard) {
+      html += '<button class="fav-dd-opt" onclick="event.stopPropagation();pasteMeal(\'' + date + '\',\'' + meal + '\')">📋 Paste "' + esc(clipboard.value) + '"</button>';
+    }
+    if (favs.length) {
+      html += '<div class="fav-dd-label' + (clipboard ? '' : '') + '">⭐ Favorites</div>' +
+        favs.map(fav => {
+          const idx = state().favorites.indexOf(fav);
+          return '<button class="fav-dd-opt" onclick="event.stopPropagation();fillCell(\'' + date + '\',\'' + meal + '\',state().favorites[' + idx + '])">' + esc(fav.name) + ' <span class="sub">' + (fav.ingredients ? fav.ingredients.length : 0) + ' ing</span></button>';
+        }).join('');
+    }
+    dd.innerHTML = html;
+    cell.appendChild(dd);
   }
 
   function addIng(date, meal) {
@@ -627,7 +777,7 @@
     if (!panel) return;
     const ings = getIngs(date, meal);
     const mealFavs = (state().favorites || []).filter(f => f.meal === meal);
-    let html = '<div class="ing-panel-header"><span class="label">INGREDIENTS</span></div>';
+    let html = '<div class="ing-panel-header"><span class="label">INGREDIENTS</span><button class="btn-tiny btn-ghost" onclick="copyMeal(\'' + date + '\',\'' + meal + '\')" style="font-size:11px">📋 Copy</button></div>';
     ings.forEach((ing, i) => {
       html += '<div class="ing-row"><span>' + (ing.emoji || '🥘') + ' ' + esc(ing.text) + '</span><button class="del-ing" onclick="removeIng(\'' + date + '\',\'' + meal + '\',' + i + ')">✕</button></div>';
     });
@@ -696,6 +846,7 @@
       const parts = expanded.split('-');
       refreshIngs(parts[0], parts[1]);
     }
+    updateWeekLabel();
   }
 
   function toggleHistory() {
@@ -761,6 +912,7 @@
     state().grocery = state().grocery.filter(i => !i.checked);
     save(); renderGrocery();
   });
+  document.getElementById('generate-grocery').addEventListener('click', generateGrocery);
 
   function fullRender() {
     renderProfiles();
